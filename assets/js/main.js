@@ -15,6 +15,22 @@ let settings = {
 
 $.ajax(settings).done(function (response) {
 	console.log(response);
+	var songArtist = response.data[0].artist.name 
+	var songName = response.data[0].title
+	var urlStart = "https://some-random-api.ml/lyrics?title="
+	var queryURL = urlStart + songArtist + " " + songName
+
+	$.ajax({
+		url: queryURL,
+		method: "GET"
+	}).then(function(response) {
+		console.log(response)
+	})
+
 });
+
+
+
+
 
 

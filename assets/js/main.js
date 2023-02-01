@@ -1,7 +1,7 @@
 console.log("hey");
 
 // Using jQuery, connect this to the value of the search input
-let artist = "michael jackson";
+let artist = prompt("Enter artist name and song title");
 
 // Ajax request for artist (Deezer API)
 let settings = {
@@ -28,6 +28,6 @@ $.ajax(settings).done(function (response) {
     url: queryURL,
     method: "GET",
   }).then(function (response) {
-    console.log(response);
+    console.log(response.lyrics);
   });
 });

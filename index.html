@@ -14,25 +14,53 @@
 
 <body>
 
+    <!-- Modal -->
+    <div class="modal fade " id="lyricsModal" tabindex="-1" aria-labelledby="lyricsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="lyricsModalTitle"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="lyricsModalContent" class="modal-body" style="white-space: pre-line">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="addToFavourites()">Add to favourites
+                        ❤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="container-fluid">
         <div class="row" style="height: 100vh;">
             <div class="col-lg-8 p-4">
                 <div class="w-100 p-2 mt-4">
                     <!-- <div> -->
-                        <form id="search-form" class="form">
-                            <div class="form-inline form-group">
-                              <div class="input-group">
-                                <input style="border: 1px solid gray; padding-left: 15px;" class="form-input w-75" type="text" id="search-input" placeholder="Search for an Artist"
-                                  aria-labelledby="form-heading"/>
+                    <form id="search-form" class="form">
+                        <div class="form-inline form-group">
+                            <div class="input-group">
+                                <input style="border: 1px solid gray; padding-left: 15px;" class="form-input w-75"
+                                    type="text" id="search-input" placeholder="Search for an Artist"
+                                    aria-labelledby="form-heading" />
                                 <div class="input-group-append btnSearch">
-                                  <button type="submit" style="border-radius: 0;" class="btn search-button btn-primary btn-block" id="search-button" aria-label="submit search">
-                                    Search
-                                  </button>
+                                    <button type="submit" style="border-radius: 0;"
+                                        class="btn search-button btn-primary btn-block" id="search-button"
+                                        aria-label="submit search">
+                                        Search
+                                    </button>
+                                    <button id="testButton" style="border-radius: 0;"
+                                        class="btn search-button btn-secondary btn-block">
+                                        Modal
+                                    </button>
                                 </div>
-                              </div>
                             </div>
-                          </form>
-                        <!-- <div class="input-group rounded" style="min-width: 500px;" data-dashlane-rid="147b32aafe36f661"
+                        </div>
+                    </form>
+                    <!-- <div class="input-group rounded" style="min-width: 500px;" data-dashlane-rid="147b32aafe36f661"
                             data-form-type="">
                             <input id="search-input" type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
                                 aria-describedby="search-addon" data-dashlane-rid="5c00430e86e133dc" data-form-type="">
@@ -163,6 +191,13 @@
 
     <script src="https://code.jquery.com/jquery-3.6.3.js"
         integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+        integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
+        crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script> -->
     <script src="./assets/js/main.js"></script>
 </body>
 

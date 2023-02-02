@@ -92,7 +92,7 @@ function showLyricData(e) {
 
 
 
-
+		// AJAX REQUEST FOR LYRICS
         // var queryURL =
         //     "https://some-random-api.ml/lyrics?title=" +
         //     songResponse.data[0].artist.name +
@@ -106,8 +106,57 @@ function showLyricData(e) {
         //     console.log(response.lyrics);
         // });
     });
+	
+	// ***** NOT WORKING FOR NOW *********
+	// .fail(() => {
+	// 	// if the ajax request fails, create a pop up asking the user to pick
+	// 	// a valid artist
+	// 	var cardEl = $("<div>").attr("class", "card");
+	// 	var cardBody = $("<div>")
+	// 	  .attr("class", "card-body p-2 border border-danger")
+	// 	  .text("Please put a valid artist!");
+	// 	cardEl.append(cardBody);
+	// 	$("#search-form").append(cardEl);
+	// 	// remove the pop up after a designated amount of time
+	// 	setTimeout(() => {
+	// 	  cardEl.remove();
+	// 	}, 1800);
+	//   });
 };
 
 $("#search-button").on("click", showLyricData);
 
+// LOCAL STORAGE STUFF (will go in showLyricData function later)
+// var songs = JSON.parse(localStorage.getItem("songData")) || [];
+//   var songObject = {
+//     image: response.album.cover,
+//     songTitle: response.name,
+//   };
+// songs.push(songObject);
+// localStorage.setItem("songData", JSON.stringify(songs));
 
+function showFavourites() {
+    var songs = JSON.parse(localStorage.getItem("cityAndCountry")) || [];
+    for (var song of songs) {
+      var card = $("<div>");
+      card.attr("class", "card mb-3").attr("style", "max-width: 540px;");
+      card.html(
+        '<div class="row g-0">' +
+            '<div class="col-md-4">' +
+                '<img src="' + song.image + '" class="img-fluid rounded-start"' +
+                     'alt="...">' +
+            '</div>' +
+            '<div class="col-md-8 d-flex flex-column p-3">' +
+                '<div class="mb-auto pt-3">' +
+                    '<h5 class="card-title">' + song.songTitle + '</h5>' +
+                '</div>' +
+                '<div class="pb-2">' +
+                    '<button class="btn btn-primary">View Lyrics</button>' +
+                '</div>' +
+            '</div>' +
+            '</div>' 
+      )
+
+    
+    }
+  }

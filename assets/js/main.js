@@ -57,6 +57,7 @@ function showLyricData(e) {
         });
 
         currentIteration = 0;
+		var row = $('<div class="row w-100 justify-content-between"></div>');
 
         // loop through the stored song info and display in bootstrap cards
         for (let i = 0; i < songResultsArray.length; i++) {

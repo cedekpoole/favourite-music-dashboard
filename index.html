@@ -17,21 +17,34 @@
     <div class="container-fluid">
         <div class="row" style="height: 100vh;">
             <div class="col-lg-8 p-4">
-                <div class="w-100 p-2 d-flex justify-content-center align-items-start flex-column mt-4">
-                    <div>
-                        <div class="input-group rounded" style="min-width: 500px;" data-dashlane-rid="147b32aafe36f661"
+                <div class="w-100 p-2 mt-4">
+                    <!-- <div> -->
+                        <form id="search-form" class="form">
+                            <div class="form-inline form-group">
+                              <div class="input-group">
+                                <input style="border: 1px solid gray; padding-left: 15px;" class="form-input w-75" type="text" id="search-input" placeholder="Search for an Artist"
+                                  aria-labelledby="form-heading"/>
+                                <div class="input-group-append btnSearch">
+                                  <button type="submit" style="border-radius: 0;" class="btn search-button btn-primary btn-block" id="search-button" aria-label="submit search">
+                                    Search
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        <!-- <div class="input-group rounded" style="min-width: 500px;" data-dashlane-rid="147b32aafe36f661"
                             data-form-type="">
                             <input id="search-input" type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
                                 aria-describedby="search-addon" data-dashlane-rid="5c00430e86e133dc" data-form-type="">
-                            <span class="input-group-text border-0" id="search-button">
+                            <button type ="submit" class="input-group-text border-0" id="search-button">
                                 <i class="fas fa-search"></i>
-                            </span>
-                        </div>
-                    </div>
+                            </button>
+                        </div> -->
+                    <!-- </div> -->
                 </div>
                 <section id="main" class="mx-0 mt-1" role="region" aria-live="polite">
                     <!-- <h2 class="px-2 mt-4" id="resultsHeading">Songs by Kayne West</h2> -->
-                    <div class="container-fluid d-flex px-2">
+                    <div class="container-fluid d-flex flex-column px-2" id="cardContainer">
                         <!-- <div class="col-lg-4">
                             <div class="card result mt-4" style="width: 18rem;">
                                 <img src="https://via.placeholder.com/300.png" class="card-img-top" alt="...">

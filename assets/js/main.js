@@ -62,18 +62,18 @@ function showLyricData(e) {
     // loop through the stored song info and display in bootstrap cards
     for (let i = 0; i < songResultsArray.length; i++) {
       if (currentIteration % 4 === 0) {
-        row = $('<div class="row w-100 justify-content-between"></div>');
+        row = $('<div class="row w-100 justify-content-between align-items-stretch"></div>');
         $('#cardContainer').append(row);
       }
       //create div to hold each card
       var songResultContainer = $('<div>');
-      songResultContainer.attr('class', 'col-lg-2 col-sm-6 justify-content-between');
+      songResultContainer.attr('class', 'col-lg-2 col-sm-6 flex-fill');
       row.append(songResultContainer);
 
       //create bootstrap card
       var songResultCard = $('<div>');
-      songResultCard.attr('class', 'card result mt-4');
-      // songResultCard.attr('style', 'width: 18rem;');
+      songResultCard.attr('class', 'card result mt-4 w-100');
+      // songResultCard.attr('style', 'width: 12rem;');
       songResultContainer.append(songResultCard);
 
       //add image to card
@@ -82,7 +82,29 @@ function showLyricData(e) {
       songResultImg.attr('src', songResultsArray[i].coverImage);
       songResultCard.append(songResultImg);
 
-      // var songResultBody = 
+      // add card body div
+      var songResultCardBody = $('<div>');
+      songResultCardBody.attr('class', 'card-body');
+      songResultCard.append(songResultCardBody);
+
+      //add song title heading
+      var songResultTitle = $('<h2>');
+      songResultTitle.attr('class', 'card-title');
+      songResultTitle.attr('style', 'font-size: calc(.5rem + .9vw !important;')
+      // songResultTitle.css('font-size', 'calc(.5rem + .9vw) !important;');
+      songResultTitle.text(songResultsArray[i].songTitle);
+      songResultCardBody.append(songResultTitle);
+
+      // add line
+      var songResultDivider = $('<hr>');
+      songResultDivider.attr('class', 'hr');
+      songResultCardBody.append(songResultDivider);
+      //add album name
+      var songResultAlbumName = $('<h3>');
+      songResultAlbumName.attr('style', 'font-size: calc(.5rem + .6vw !important;')
+      // songResultAlbumName.css('font-size', 'calc(.5rem + .6vw) !important');
+      songResultAlbumName.text('Album: ' + songResultsArray[i].songAlbum);
+      songResultCardBody.append(songResultAlbumName);
 
       currentIteration++;
 

@@ -126,6 +126,7 @@ function showLyricData(e) {
 
 $("#search-button").on("click", showLyricData);
 
+// $("#favourites").empty()
 // var songs = JSON.parse(localStorage.getItem("songData")) || [];
 //   var songObject = {
 //     image: response.album.cover,
@@ -135,7 +136,7 @@ $("#search-button").on("click", showLyricData);
 // localStorage.setItem("songData", JSON.stringify(songs));
 
 function showFavourites() {
-  var songs = JSON.parse(localStorage.getItem("cityAndCountry")) || [];
+  var songs = JSON.parse(localStorage.getItem("songData")) || [];
   for (var song of songs) {
     var card = $("<div>");
     card.attr("class", "card mb-3").attr("style", "max-width: 540px;");
@@ -155,10 +156,17 @@ function showFavourites() {
       '</div>' +
       '</div>'
     )
-
+	$("#favourites").append(card)
 
   }
 }
+
+function clearFavourites() {
+	$("#favourites").empty();
+	localStorage.clear()
+}
+
+$("#clearFavourites").on("click", clearFavourites);
 
 $("#testButton").on("click", showModal);
 

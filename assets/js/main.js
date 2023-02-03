@@ -90,8 +90,7 @@ function showLyricData(e) {
       //add song title heading
       var songResultTitle = $('<h2>');
       songResultTitle.attr('class', 'card-title');
-      songResultTitle.attr('style', 'font-size: calc(.5rem + .9vw !important;')
-      // songResultTitle.css('font-size', 'calc(.5rem + .9vw) !important;');
+      songResultTitle.attr('style', 'font-size: calc(.5rem + .9vw) !important;')
       songResultTitle.text(songResultsArray[i].songTitle);
       songResultCardBody.append(songResultTitle);
 
@@ -99,12 +98,29 @@ function showLyricData(e) {
       var songResultDivider = $('<hr>');
       songResultDivider.attr('class', 'hr');
       songResultCardBody.append(songResultDivider);
+
       //add album name
       var songResultAlbumName = $('<h3>');
-      songResultAlbumName.attr('style', 'font-size: calc(.5rem + .6vw !important;')
-      // songResultAlbumName.css('font-size', 'calc(.5rem + .6vw) !important');
+      songResultAlbumName.attr('style', 'font-size: calc(.5rem + .6vw) !important;');
       songResultAlbumName.text('Album: ' + songResultsArray[i].songAlbum);
       songResultCardBody.append(songResultAlbumName);
+
+      //add buttons div
+      var songResultButtonDiv = $('<div>');
+      songResultButtonDiv.attr('class', 'd-flex flex-wrap');
+      songResultCardBody.append(songResultButtonDiv);
+
+      //add buttons to div
+      var songResultLyricsBtn = $('<button>');
+      songResultLyricsBtn.attr('class', 'btn btn-primary flex-fill');
+      songResultLyricsBtn.attr('style', 'margin-right: .5rem !important;');
+      songResultLyricsBtn.text('View Lyrics');
+      songResultButtonDiv.append(songResultLyricsBtn);
+
+      var songResultFavBtn = $('<button>');
+      songResultFavBtn.attr('class', 'btn btn-primary flex-fill');
+      songResultFavBtn.text('Add to Favs');
+      songResultButtonDiv.append(songResultFavBtn);
 
       currentIteration++;
 
@@ -178,14 +194,14 @@ function showFavourites() {
       '</div>' +
       '</div>'
     )
-	$("#favourites").append(card)
+    $("#favourites").append(card)
 
   }
 }
 
 function clearFavourites() {
-	$("#favourites").empty();
-	localStorage.clear()
+  $("#favourites").empty();
+  localStorage.clear()
 }
 
 $("#clearFavourites").on("click", clearFavourites);
@@ -194,7 +210,7 @@ $("#testButton").on("click", showModal);
 
 function showModal(e) {
   e.preventDefault();
-  
+
   $("#lyricsModalTitle").text("Sweet Caroline" + " - Lyrics")
   $("#lyricsModalContent").html(`Where it began,\nI can't begin to knowin'\nBut then I know it's growing strong\nWas in the spring\nAnd spring became the summer\nWho'd have believed you'd come along.\n\nHands, touchin' hands\nReachin' out, touchin' me touchin' you\nSweet Caroline\nGood times never seemed so good\nI've been inclined\nTo believe they never would\nBut now I, look at the night\nAnd it don't seem so lonely\nWe fill it up with only two.\n\nAnd when I hurt,\nHurtin' runs off my shoulders\nHow can I hurt when I'm with you\nWarm, touchin' warm\nReachin' out, touchin' me touchin' you\nSweet Caroline\nGood times never seemed so good\nI've been inclined,\nTo believe they never would\nOh, no, no\n\nSweet Caroline\nGood times never seemed so good\nSweet Caroline,\nI believe they never could\nSweet Caroline.........`);// LOCAL STORAGE STUFF (will go in showLyricData function later)
   $("#lyricsModal").modal("show");

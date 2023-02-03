@@ -121,9 +121,9 @@ function showLyricData(e) {
 
       //add buttons to div
       var songResultLyricsBtn = $('<button>');
-      songResultLyricsBtn.attr('class', 'btn btn-primary flex-fill');
+      songResultLyricsBtn.attr('class', 'btn btn-primary flex-fill lyricsButton');
       songResultLyricsBtn.attr('style', 'margin-right: .5rem !important;');
-      songResultLyricsBtn.text('View Lyrics');
+      songResultLyricsBtn.text('View Lyrics').attr("data-songName",songResultsArray[i].songTitle).attr("data-artistName",songResultsArray[i].songArtist);
       songResultButtonDiv.append(songResultLyricsBtn);
 
       var songResultFavBtn = $('<button>');
@@ -215,12 +215,31 @@ function clearFavourites() {
 
 $("#clearFavourites").on("click", clearFavourites);
 
-$("#testButton").on("click", showModal);
+$(".lyricsButton").on("click", showModal);
 
 function showModal(e) {
+  alert("click");
   e.preventDefault();
+  var button = $(e.target);
+  var songName = button.attr("data-songName");
+  var artistName = button.attr("data-artistName");
 
-  $("#lyricsModalTitle").text("Sweet Caroline" + " - Lyrics")
-  $("#lyricsModalContent").html(`Where it began,\nI can't begin to knowin'\nBut then I know it's growing strong\nWas in the spring\nAnd spring became the summer\nWho'd have believed you'd come along.\n\nHands, touchin' hands\nReachin' out, touchin' me touchin' you\nSweet Caroline\nGood times never seemed so good\nI've been inclined\nTo believe they never would\nBut now I, look at the night\nAnd it don't seem so lonely\nWe fill it up with only two.\n\nAnd when I hurt,\nHurtin' runs off my shoulders\nHow can I hurt when I'm with you\nWarm, touchin' warm\nReachin' out, touchin' me touchin' you\nSweet Caroline\nGood times never seemed so good\nI've been inclined,\nTo believe they never would\nOh, no, no\n\nSweet Caroline\nGood times never seemed so good\nSweet Caroline,\nI believe they never could\nSweet Caroline.........`);// LOCAL STORAGE STUFF (will go in showLyricData function later)
+  $("#lyricsModalTitle").empty();
+  $("#lyricsModalContent").html(`<div class="d-flex justify-content-center"><div class="spinner-border" role="status"></div></div>`);
+
+  queryURL = "https://some-random-api.ml/lyrics?title=" + songName + artistName;
+
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+
+  }).then(function (response) {
+    console.log(response);
+    var lyrics = response.lyrics;
+    $("#lyricsModalTitle").text(songName + " - Lyrics");
+    $("#lyricsModalContent").html(lyrics);// LOCAL STORAGE STUFF (will go in showLyricData function later)
+  });
+
   $("#lyricsModal").modal("show");
 }
+

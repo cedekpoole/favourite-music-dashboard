@@ -215,10 +215,9 @@ function clearFavourites() {
 
 $("#clearFavourites").on("click", clearFavourites);
 
-$(".lyricsButton").on("click", showModal);
+$(document).on("click", ".lyricsButton", showModal);
 
 function showModal(e) {
-  alert("click");
   e.preventDefault();
   var button = $(e.target);
   var songName = button.attr("data-songName");

@@ -40,26 +40,35 @@
             <div class="col-lg-8 p-4">
                 <div class="w-100 p-2 mt-4">
                     <!-- <div> -->
-                    <form id="search-form" class="form">
-                        <div class="form-inline form-group">
-                            <div class="input-group">
-                                <input style="border: 1px solid gray; padding-left: 15px;" class="form-input w-75"
-                                    type="text" id="search-input" placeholder="Search for an Artist"
-                                    aria-labelledby="form-heading" />
-                                <div class="input-group-append btnSearch">
-                                    <button type="submit" style="border-radius: 0;"
-                                        class="btn search-button btn-primary btn-block" id="search-button"
-                                        aria-label="submit search">
-                                        Search
-                                    </button>
-                                    <button id="testButton" style="border-radius: 0;"
-                                        class="btn search-button btn-secondary btn-block">
-                                        Modal
-                                    </button>
+                    <div class="row">
+                        <div class="col-12">
+                            <form id="search-form" class="form">
+                                <div class="form-inline form-group">
+                                    <div class="input-group">
+                                        <input style="border: 1px solid gray; padding-left: 15px;" class="form-input w-75"
+                                            type="text" id="search-input" placeholder="Search for an Artist"
+                                            aria-labelledby="form-heading" />
+                                        <div class="input-group-append btnSearch">
+                                            <button type="submit" style="border-radius: 0;"
+                                                class="btn search-button btn-primary btn-block" id="search-button"
+                                                aria-label="submit search">
+                                                Search
+                                            </button>
+                                            <button id="testButton" style="border-radius: 0;"
+                                                class="btn search-button btn-secondary btn-block">
+                                                Modal
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
+                            </form>
+                        </div>
+                        <div id="invalid-input" class="col-6">
+                            <div class="card border-0">
+                                <div class="card-body p-2 mt-2 border border-danger">Please put a valid artist</div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                     <!-- <div class="input-group rounded" style="min-width: 500px;" data-dashlane-rid="147b32aafe36f661"
                             data-form-type="">
                             <input id="search-input" type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
@@ -177,8 +186,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div> -->
+                    </div> -->
+                </div> 
 
                 <div id="clearFavourites">
                     <button class="btn rounded-sm btn-dark btn-block mt-3">Clear Favourites</button>

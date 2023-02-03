@@ -1,5 +1,7 @@
 console.log("hey");
 
+$("#invalid-input").hide();
+
 function showLyricData(e) {
 
   e.preventDefault();
@@ -34,7 +36,14 @@ function showLyricData(e) {
   $.ajax(settings).done(function (songResponse) {
     // console.log(songResponse);
     // Get query URL for the lyric API
-
+    if (songResponse.error) {
+      resultsHeading.hide();
+      $("#invalid-input").show();
+      // remove the pop up after a designated amount of time
+      setTimeout(() => {
+        $("#invalid-input").hide();
+      }, 2000);
+    }
     // store song response information
     var songResults = songResponse.data;
     var songResultsArray = [];

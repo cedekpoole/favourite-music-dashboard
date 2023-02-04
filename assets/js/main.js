@@ -169,7 +169,7 @@ function showFavourites() {
         '<div class="col-md-4">' +
         '<img src="' +
         song.image +
-        '" class="img-fluid rounded-start"' +
+        '" class="rounded-start h-100 w-100"' +
         'alt="...">' +
         "</div>" +
         '<div class="col-md-8 d-flex flex-column p-3">' +

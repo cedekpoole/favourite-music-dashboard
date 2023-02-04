@@ -237,21 +237,32 @@ function showModal(e) {
   var artistName = button.attr("data-artistName");
 
   $("#lyricsModalTitle").empty();
-  $("#lyricsModalContent").html(
-    `<div class="d-flex justify-content-center"><div class="spinner-border" role="status"></div></div>`
-  );
+  $("#favouritesButton").hide();
+  $("#lyricsModalContent").html('<div class="d-flex justify-content-center">' +
+    '<div class="spinner-border"' + 
+    'role="status">' +
+    '</div>' +
+    '</div>');
 
   queryURL = "https://some-random-api.ml/lyrics?title=" + songName + artistName;
 
   $.ajax({
     url: queryURL,
     method: "GET",
-  }).then(function (response) {
+    
+  }).then(function(response) {
     console.log(response);
-    var lyrics = response.lyrics;
-    $("#lyricsModalTitle").text(songName + " - Lyrics");
-    $("#lyricsModalContent").html(lyrics); // LOCAL STORAGE STUFF (will go in showLyricData function later)
-  });
-
+    $("#lyricsModalTitle").text(`${songName} by ${artistName}  - Lyrics`);
+    $("#lyricsModalContent").html(response.lyrics);// LOCAL STORAGE STUFF (will go in showLyricData function later)
+    $("#favouritesButton").show();
+  }).fail (function() {
+    $("#lyricsModalTitle").text("Oops!");
+    $("#lyricsModalContent").text("We weren't able to find lyrics for that song! :(");
+    $("#favouritesButton").hide();
+})
   $("#lyricsModal").modal("show");
 }
+
+// $( document ).ajaxError(function(event, jqxhr, settings, thrownError ) {
+//  console.log(event);
+// });

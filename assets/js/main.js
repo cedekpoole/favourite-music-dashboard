@@ -409,3 +409,5 @@ $("#playlistContainer").on("click", ".favsButton", function () {
 
   showFavourites();
 });
+
+showFavourites();

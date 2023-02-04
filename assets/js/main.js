@@ -69,15 +69,15 @@ function showLyricData(e) {
 
     // loop through the stored song info and display in bootstrap cards
     for (let i = 0; i < songResultsArray.length; i++) {
-      if (currentIteration % 4 === 0) {
-        row = $(
-          '<div class="row w-100 justify-content-between align-items-stretch"></div>'
-        );
-        $("#cardContainer").append(row);
-      }
+      // if (currentIteration % 4 === 0) {
+      //   row = $(
+      //     '<div class="row w-100 justify-content-between align-items-stretch"></div>'
+      //   );
+      //   $("#cardContainer").append(row);
+      // }
       //create div to hold each card
       var songResultContainer = $("<div>");
-      songResultContainer.attr("class", "col-lg-2 col-sm-6 flex-fill");
+      songResultContainer.attr("class", "col-md-6 col-lg-4 col-xlg-3 flex-fill d-flex align-items-stretch");
       row.append(songResultContainer);
 
       //create bootstrap card
@@ -94,7 +94,7 @@ function showLyricData(e) {
 
       // add card body div
       var songResultCardBody = $("<div>");
-      songResultCardBody.attr("class", "card-body");
+      songResultCardBody.attr("class", "d-flex card-body flex-column");
       songResultCard.append(songResultCardBody);
 
       //add song title heading
@@ -102,7 +102,7 @@ function showLyricData(e) {
       songResultTitle.attr("class", "card-title");
       songResultTitle.attr(
         "style",
-        "font-size: calc(.5rem + .9vw) !important;"
+        "font-size: calc(.5rem + .9vw) !important; margin-bottom: 0 !important;"
       );
       songResultTitle.text(songResultsArray[i].songTitle);
       songResultCardBody.append(songResultTitle);
@@ -110,20 +110,21 @@ function showLyricData(e) {
       // add line
       var songResultDivider = $("<hr>");
       songResultDivider.attr("class", "hr");
+      songResultDivider.attr('style', 'margin: .5rem 0 !important;');
       songResultCardBody.append(songResultDivider);
 
       //add album name
       var songResultAlbumName = $("<h3>");
       songResultAlbumName.attr(
         "style",
-        "font-size: calc(.5rem + .6vw) !important;"
+        "font-size: calc(.5rem + .6vw) !important; margin-bottom: 2rem;"
       );
       songResultAlbumName.text("Album: " + songResultsArray[i].songAlbum);
       songResultCardBody.append(songResultAlbumName);
 
       //add buttons div
       var songResultButtonDiv = $("<div>");
-      songResultButtonDiv.attr("class", "d-flex flex-wrap");
+      songResultButtonDiv.attr("class", "d-flex flex-wrap gap-2 mt-auto");
       songResultCardBody.append(songResultButtonDiv);
 
       //add buttons to div
@@ -132,7 +133,7 @@ function showLyricData(e) {
         "class",
         "btn btn-primary flex-fill lyricsButton"
       );
-      songResultLyricsBtn.attr("style", "margin-right: .5rem !important;");
+      // songResultLyricsBtn.attr("style", "margin-right: .5rem !important;");
       songResultLyricsBtn
         .text("View Lyrics")
         .attr("data-songName", songResultsArray[i].songTitle)

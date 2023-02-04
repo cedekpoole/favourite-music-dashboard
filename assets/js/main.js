@@ -1,20 +1,22 @@
 console.log("hey");
+var resultsHeading = $('#resultsHeading');
 
 $("#invalid-input").hide();
+resultsHeading.hide();
+
 
 function showLyricData(e) {
   e.preventDefault();
+
   // Using jQuery, connect this to the value of the search input
   let artist = $("#search-input").val();
 
   //clearing search input field
   $("#search-input").val("");
 
-  // adding heading for chosen artist
-  var resultsHeading = $("<h2> Songs by " + artist + "</h2>");
-  resultsHeading.attr("class", "px-2 mt-4");
-  resultsHeading.css("textTransform", "capitalize");
-  $("#main").prepend(resultsHeading);
+  // adding artist name to h2
+  resultsHeading.text('Most Popular Songs by ' + artist);
+  resultsHeading.show();
 
   // Ajax request for artist (Deezer API)
   let settings = {
@@ -41,13 +43,13 @@ function showLyricData(e) {
       // remove the pop up after a designated amount of time
       setTimeout(() => {
         $("#invalid-input").hide();
-      }, 2000);
+      }, 3000);
     }
     // store song response information
     var songResults = songResponse.data;
     var songResultsArray = [];
 
-    // loop through the data for the first 9 responses
+    // loop through the data for the first 12 responses
     $.each(songResults, function (index, value) {
       if (index == 12) {
         return false;
@@ -66,6 +68,8 @@ function showLyricData(e) {
 
     currentIteration = 0;
     var row = $('<div class="row w-100 justify-content-between"></div>');
+
+    $('#cardContainer').empty();
 
     // loop through the stored song info and display in bootstrap cards
     for (let i = 0; i < songResultsArray.length; i++) {

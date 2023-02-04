@@ -1,0 +1,53 @@
+.btn-dark {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #e65b00;
+    border-color: #e65b00;
+}
+
+.p-4 {
+    background-color: #0a183d;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #ffffff;
+    
+}
+
+aside.col-lg-4 p-4 {
+    background-color: #0a183d;
+}
+
+.btn-primary {
+    --bs-btn-bg: #e65b00;
+    --bs-btn-border-color: #e65b00;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #ffa970;
+    --bs-btn-hover-border-color: #ffa970;
+   
+}
+
+.btn {
+    --bs-btn-border-radius: 0px;
+}
+
+*, html {
+    scroll-behavior: auto !important;
+}
+
+.card-body {
+    list-style: none;
+    background: #1c294a;    
+}
+
+.card-title {
+    color: #ff6500;
+}
+
+.p-3 {
+    padding: 1rem!important;
+    background-color: #1c294a;
+}

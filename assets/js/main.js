@@ -385,7 +385,10 @@ function showPlaylist() {
       playlistButtonDiv.append(playlistLyricsBtn);
 
       var playlistFavBtn = $("<button>");
-      playlistFavBtn.attr("class", "btn btn-primary flex-fill");
+      playlistFavBtn
+        .attr("class", "btn btn-primary flex-fill favsButton")
+        .attr("data-songName", playlistTracksArray[i].songTitle)
+        .attr("data-coverImg", playlistTracksArray[i].coverImage);
       playlistFavBtn.text("Add to Favs");
       playlistButtonDiv.append(playlistFavBtn);
     }
@@ -393,3 +396,16 @@ function showPlaylist() {
     $("#playlistContainer").append(playlistRow);
   });
 }
+
+$("#playlistContainer").on("click", ".favsButton", function () {
+  $("#favourites").empty();
+  var songs = JSON.parse(localStorage.getItem("songData")) || [];
+  var songObject = {
+    image: $(this).attr("data-coverImg"),
+    songTitle: $(this).attr("data-songName"),
+  };
+  songs.push(songObject);
+  localStorage.setItem("songData", JSON.stringify(songs));
+
+  showFavourites();
+});

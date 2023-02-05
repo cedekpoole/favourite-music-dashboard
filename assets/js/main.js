@@ -1,8 +1,9 @@
 console.log("hey");
 var resultsHeading = $("#resultsHeading");
 
-$("#invalid-input").hide();
+// $("#invalid-input").hide();
 resultsHeading.hide();
+$("#clearFavourites").hide();
 
 function showLyricData(e) {
   e.preventDefault();
@@ -60,7 +61,7 @@ function showLyricData(e) {
         songsObj = {
           songTitle: value.title,
           songArtist: value.artist.name,
-          coverImage: value.album.cover,
+          coverImage: value.album.cover_big,
           songAlbum: value.album.title,
         };
         console.log(songsObj);
@@ -147,13 +148,15 @@ function showLyricData(e) {
         songResultLyricsBtn
           .text("View Lyrics")
           .attr("data-songName", songResultsArray[i].songTitle)
-          .attr("data-artistName", songResultsArray[i].songArtist);
+          .attr("data-artistName", songResultsArray[i].songArtist)
+          .attr("data-coverImg", songResultsArray[i].coverImage);
         songResultButtonDiv.append(songResultLyricsBtn);
 
         var songResultFavBtn = $("<button>");
         songResultFavBtn
           .attr("class", "btn btn-primary flex-fill favsButton")
           .attr("data-songName", songResultsArray[i].songTitle)
+          .attr("data-artistName", songResultsArray[i].songArtist)
           .attr("data-coverImg", songResultsArray[i].coverImage);
         songResultFavBtn.text("Add to Favs");
         songResultButtonDiv.append(songResultFavBtn);
@@ -208,35 +211,43 @@ function showFavourites() {
       "</h5>" +
       "</div>" +
       '<div class="pb-2">' +
-      '<button class="btn btn-primary">View Lyrics</button>' +
+      '<button class="btn btn-primary lyricsButton" data-songName="' + song.songTitle + '" data-artistName="' + song.songArtist + '">View Lyrics</button>' +
       "</div>" +
       "</div>" +
       "</div>"
     );
     $("#favourites").append(card);
+    $("#clearFavourites").html('<button id="clearFavsButton" class="btn rounded-sm btn-dark btn-block mt-3">Clear Favourites</button>')
+    if (songs.length === 0) {
+      $("#clearFavourites").hide();
+    }
+    else {
+      $("#clearFavourites").show();
+    }
   }
 }
 
-$("#cardContainer").on("click", ".favsButton", function () {
-  $("#favourites").empty();
-  var songs = JSON.parse(localStorage.getItem("songData")) || [];
-  var songObject = {
-    image: $(this).attr("data-coverImg"),
-    songTitle: $(this).attr("data-songName"),
-  };
-  songs.push(songObject);
-  localStorage.setItem("songData", JSON.stringify(songs));
+// $("#cardContainer").on("click", ".favsButton", function () {
+//   $("#favourites").empty();
+//   var songs = JSON.parse(localStorage.getItem("songData")) || [];
+//   var songObject = {
+//     image: $(this).attr("data-coverImg"),
+//     songTitle: $(this).attr("data-songName"),
+//   };
+//   songs.push(songObject);
+//   localStorage.setItem("songData", JSON.stringify(songs));
 
-  $('.resultContainer').removeClass('col-md-6 col-lg-3 ').addClass('col-xl-4 col-lg-4 col-md-6');
-  $('#resultsDiv').addClass('col-lg-8 col-md-9');
-  $('aside').show();
+//   $('.resultContainer').removeClass('col-md-6 col-lg-3 ').addClass('col-xl-4 col-lg-4 col-md-6');
+//   $('#resultsDiv').addClass('col-lg-8 col-md-9');
+//   $('aside').show();
 
-  showFavourites();
-});
+//   showFavourites();
+// });
 
 function clearFavourites() {
   $("#favourites").empty();
   localStorage.clear();
+  $("#clearFavourites").hide();
 
   if(!localStorage.getItem('songData')) {
     $('aside').hide();
@@ -258,6 +269,7 @@ function showModal(e) {
   var button = $(e.target);
   var songName = button.attr("data-songName");
   var artistName = button.attr("data-artistName");
+  var coverImg = button.attr("data-coverImg");
 
   $("#lyricsModalTitle").empty();
   $("#favouritesButton").hide();
@@ -279,6 +291,10 @@ function showModal(e) {
       console.log(response);
       $("#lyricsModalTitle").text(`${songName} by ${artistName}  - Lyrics`);
       $("#lyricsModalContent").html(response.lyrics); // LOCAL STORAGE STUFF (will go in showLyricData function later)
+
+      $("#favouritesButton").attr("data-songName", songName)
+        .attr("data-artistName", artistName)
+        .attr("data-coverImg", coverImg);
       $("#favouritesButton").show();
     })
     .fail(function () {
@@ -324,7 +340,7 @@ function showPlaylist() {
       playlistObj = {
         songTitle: value.title,
         songArtist: value.artist.name,
-        coverImage: value.album.cover,
+        coverImage: value.album.cover_big,
         songAlbum: value.album.title,
       };
       console.log(playlistObj);
@@ -433,13 +449,15 @@ function showPlaylist() {
       playlistLyricsBtn
         .text("View Lyrics")
         .attr("data-songName", playlistTracksArray[i].songTitle)
-        .attr("data-artistName", playlistTracksArray[i].songArtist);
+        .attr("data-artistName", playlistTracksArray[i].songArtist)
+        .attr("data-coverImg", playlistTracksArray[i].coverImage);
       playlistButtonDiv.append(playlistLyricsBtn);
 
       var playlistFavBtn = $("<button>");
       playlistFavBtn
         .attr("class", "btn btn-primary flex-fill favsButton")
         .attr("data-songName", playlistTracksArray[i].songTitle)
+        .attr("data-artistName", playlistTracksArray[i].songArtist)
         .attr("data-coverImg", playlistTracksArray[i].coverImage);
       playlistFavBtn.text("Add to Favs");
       playlistButtonDiv.append(playlistFavBtn);
@@ -449,12 +467,13 @@ function showPlaylist() {
   });
 }
 
-$("#playlistContainer").on("click", ".favsButton", function () {
+$(document).on("click", ".favsButton", function () {
   $("#favourites").empty();
   var songs = JSON.parse(localStorage.getItem("songData")) || [];
   var songObject = {
     image: $(this).attr("data-coverImg"),
     songTitle: $(this).attr("data-songName"),
+    songArtist: $(this).attr("data-artistName")
   };
   songs.push(songObject);
   localStorage.setItem("songData", JSON.stringify(songs));

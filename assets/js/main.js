@@ -191,8 +191,11 @@ function invalidSearch(searchString, apiFail) {
 $("#search-button").on("click", showLyricData);
 $("#retryButton").on("click", showLyricData);
 
+// Create a function that reveals favourite song cards 
 function showFavourites() {
+  // If nothing is saved to local storage, set the variable to an empty array
   var songs = JSON.parse(localStorage.getItem("songData")) || [];
+  // Loop through local storage to create a card for each song
   for (var song of songs) {
     var card = $("<div>");
     card.attr("class", "card mb-3").attr("style", "max-width: 540px;");
@@ -227,23 +230,7 @@ function showFavourites() {
   }
 }
 
-// $("#cardContainer").on("click", ".favsButton", function () {
-//   $("#favourites").empty();
-//   var songs = JSON.parse(localStorage.getItem("songData")) || [];
-//   var songObject = {
-//     image: $(this).attr("data-coverImg"),
-//     songTitle: $(this).attr("data-songName"),
-//   };
-//   songs.push(songObject);
-//   localStorage.setItem("songData", JSON.stringify(songs));
-
-//   $('.resultContainer').removeClass('col-md-6 col-lg-3 ').addClass('col-xl-4 col-lg-4 col-md-6');
-//   $('#resultsDiv').addClass('col-lg-8 col-md-9');
-//   $('aside').show();
-
-//   showFavourites();
-// });
-
+// Create a function that removes songs from local data and clears favourites cards
 function clearFavourites() {
   $("#favourites").empty();
   localStorage.clear();
@@ -260,6 +247,7 @@ function clearFavourites() {
 
 };
 
+// When 'clear favourites' button is clicked, clear favourites cards
 $("#clearFavourites").on("click", clearFavourites);
 
 $(document).on("click", ".lyricsButton", showModal);
@@ -290,7 +278,7 @@ function showModal(e) {
     .then(function (response) {
       console.log(response);
       $("#lyricsModalTitle").text(`${songName} by ${artistName}  - Lyrics`);
-      $("#lyricsModalContent").html(response.lyrics); // LOCAL STORAGE STUFF (will go in showLyricData function later)
+      $("#lyricsModalContent").html(response.lyrics); 
 
       $("#favouritesButton").attr("data-songName", songName)
         .attr("data-artistName", artistName)
@@ -467,6 +455,7 @@ function showPlaylist() {
   });
 }
 
+// When the 'Add to favourites' button is clicked, save song to local storage
 $(document).on("click", ".favsButton", function () {
   $("#favourites").empty();
   var songs = JSON.parse(localStorage.getItem("songData")) || [];
@@ -481,7 +470,8 @@ $(document).on("click", ".favsButton", function () {
   $('.resultContainer').removeClass('col-md-6 col-lg-3 ').addClass('col-xl-4 col-lg-4 col-md-6');
   $('aside').show();
   $('#resultsDiv').addClass('col-lg-8 col-md-9');
-
+  
+  // Execute function that shows favourites cards
   showFavourites();
 });
 

@@ -241,7 +241,8 @@ function showFavourites() {
         "</h5>" +
         "</div>" +
         '<div class="pb-2">' +
-        '<button class="btn btn-primary lyricsButton">View Lyrics</button>' +
+        '<button class="btn mb-1 btn-primary lyricsButton">View Lyrics</button>' +
+        '<button class="btn btn-primary deleteButton">Delete Song</button>' +
         "</div>" +
         "</div>" +
         "</div>"
@@ -274,6 +275,29 @@ function clearFavourites() {
     $("aside").show();
   }
 }
+
+// When 'delete song' button is clicked, remove that particular song from local storage
+$(document).on("click", ".deleteButton", function () {
+  $("#favourites").empty();
+  var songData = JSON.parse(localStorage.getItem("songData"));
+  console.log(songData);
+  var songObject = {
+    image: $(this).closest("[data-coverImg]").attr("data-coverImg"),
+    songTitle: $(this).closest("[data-songName]").attr("data-songName"),
+    songArtist: $(this).closest("[data-artistName]").attr("data-artistName"),
+  };
+  var removeIndex = songData.findIndex(
+    (song) => song.songTitle === songObject.songTitle
+  );
+  songData.splice(removeIndex, 1);
+  localStorage.setItem("songData", JSON.stringify(songData));
+
+  showFavourites();
+
+  if (songData.length === 0) {
+    clearFavourites();
+  }
+});
 
 // When 'clear favourites' button is clicked, clear favourites cards
 $("#clearFavourites").on("click", clearFavourites);

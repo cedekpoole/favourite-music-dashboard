@@ -100,7 +100,7 @@ function showLyricData(e) {
         //add image to card
         var songResultImg = $("<img>");
         songResultImg.attr("class", "card-img-top");
-        songResultImg.attr("src", songResultsArray[i].coverImage);
+        songResultImg.attr("src", songResultsArray[i].coverImage ? songResultsArray[i].coverImage : 'assets/images/default-cover-art.jpg');
         songResultCard.append(songResultImg);
 
         // add card body div

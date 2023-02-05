@@ -215,15 +215,15 @@ function showFavourites() {
     var card = $("<div>");
     card.attr("class", "card mb-3").attr("style", "max-width: 540px;");
     card.html(
-      '<div class="row g-0">' +
-      '<div class="col-md-4">' +
+      '<div class="row d-flex flex-row flex-md-wrap flex-lg-nowrap g-0">' +
+      '<div class="flex-fill d-flex d-sm-block">' +
       '<img src="' +
       song.image +
-      '" class="rounded-start h-100 w-100"' +
+      '" class="h-100 w-100"' +
       'alt="...">' +
       "</div>" +
-      '<div class="col-md-8 d-flex flex-column p-3">' +
-      '<div class="mb-auto pt-3">' +
+      '<div class="flex-fill d-flex flex-column justify-content-center align-items-center p-3">' +
+      '<div class="mb-1 pt-3">' +
       '<h5 class="card-title">' +
       song.songTitle +
       "</h5>" +

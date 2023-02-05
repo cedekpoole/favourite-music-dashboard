@@ -479,7 +479,16 @@ $(document).on("click", ".favsButton", function () {
     songArtist: $(this).closest('[data-artistName]').attr("data-artistName")
   };
   songs.push(songObject);
-  localStorage.setItem("songData", JSON.stringify(songs));
+  // To stop duplication of the the songData objects, loop through the array and remove them
+  var uniqueSongs = songs.reduce((accumulator, current) => {
+    if (!accumulator.find((songObject) => songObject.songTitle === current.songTitle)) {
+      accumulator.push(current);
+    }
+    return accumulator;
+  }, []);
+  var songData = uniqueSongs.map(songObject => songObject)
+
+  localStorage.setItem("songData", JSON.stringify(songData));
 
   $('.resultContainer').removeClass('col-md-6 col-lg-3 ').addClass('col-xl-4 col-lg-4 col-md-6');
   $('aside').show();

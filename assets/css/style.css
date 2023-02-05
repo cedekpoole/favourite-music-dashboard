@@ -51,3 +51,7 @@ aside.col-lg-4 p-4 {
     padding: 1rem!important;
     background-color: #1c294a;
 }
+
+#lyricsModalTitle {
+    color: #ff6500;
+}

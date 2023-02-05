@@ -41,6 +41,8 @@ aside.col-lg-4 p-4 {
 .card-body {
     list-style: none;
     background: #1c294a;    
+    border-radius: 0px 0px 20px 20px;
+    
 }
 
 .card-title {
@@ -54,4 +56,17 @@ aside.col-lg-4 p-4 {
 
 #lyricsModalTitle {
     color: #ff6500;
+}
+
+.modal-content, .card{
+    opacity: 90%;
+    border-radius: 20px;
+}
+
+.card-img-top{
+    border-radius: 20px 20px 0px 0px;
+}
+
+.lyricsButton, .favsButton{
+    border-radius: 20px;
 }

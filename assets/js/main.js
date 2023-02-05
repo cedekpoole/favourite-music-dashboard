@@ -103,9 +103,12 @@ function showLyricData(e) {
         songResultImg.attr("src", songResultsArray[i].coverImage ? songResultsArray[i].coverImage : 'assets/images/default-cover-art.jpg');
         songResultCard.append(songResultImg);
 
-        // add card body div
+        // add card body div and add song data attributes to the card
         var songResultCardBody = $("<div>");
-        songResultCardBody.attr("class", "d-flex card-body flex-column");
+        songResultCardBody.attr("class", "d-flex card-body flex-column")
+        .attr("data-songName", songResultsArray[i].songTitle)
+        .attr("data-artistName", songResultsArray[i].songArtist)
+        .attr("data-coverImg", songResultImg.attr("src"));
         songResultCard.append(songResultCardBody);
 
         //add song title heading
@@ -162,17 +165,11 @@ function showLyricData(e) {
         // songResultLyricsBtn.attr("style", "margin-right: .5rem !important;");
         songResultLyricsBtn
           .text("View Lyrics")
-          .attr("data-songName", songResultsArray[i].songTitle)
-          .attr("data-artistName", songResultsArray[i].songArtist)
-          .attr("data-coverImg", songResultsArray[i].coverImage);
         songResultButtonDiv.append(songResultLyricsBtn);
 
         var songResultFavBtn = $("<button>");
         songResultFavBtn
           .attr("class", "btn btn-primary flex-fill favsButton")
-          .attr("data-songName", songResultsArray[i].songTitle)
-          .attr("data-artistName", songResultsArray[i].songArtist)
-          .attr("data-coverImg", songResultsArray[i].coverImage);
         songResultFavBtn.text("Add to Favs");
         songResultButtonDiv.append(songResultFavBtn);
 
@@ -185,6 +182,7 @@ function showLyricData(e) {
   });
 }
 
+// when deezer ajax query fails, update the modal content to be an appropriate message to the error thrown 
 function invalidSearch(searchString, apiFail) {
   $("#lyricsModalTitle").text("Oops!");
   $("#retryButton").hide();
@@ -213,7 +211,10 @@ function showFavourites() {
   // Loop through local storage to create a card for each song
   for (var song of songs) {
     var card = $("<div>");
-    card.attr("class", "card mb-3").attr("style", "max-width: 540px;");
+    card.attr("class", "card mb-3").attr("style", "max-width: 540px;")
+      .attr("data-songName", song.songTitle)
+      .attr("data-artistName", song.songArtist)
+      .attr("data-coverImg", song.image);
     card.html(
       '<div class="row d-flex flex-row flex-md-wrap flex-lg-nowrap g-0">' +
       '<div class="flex-fill d-flex d-sm-block">' +
@@ -229,7 +230,7 @@ function showFavourites() {
       "</h5>" +
       "</div>" +
       '<div class="pb-2">' +
-      '<button class="btn btn-primary lyricsButton" data-songName="' + song.songTitle + '" data-artistName="' + song.songArtist + '">View Lyrics</button>' +
+      '<button class="btn btn-primary lyricsButton">View Lyrics</button>' +
       "</div>" +
       "</div>" +
       "</div>"
@@ -265,15 +266,20 @@ function clearFavourites() {
 // When 'clear favourites' button is clicked, clear favourites cards
 $("#clearFavourites").on("click", clearFavourites);
 
+// when a lyrics button is clicked then showModal()
 $(document).on("click", ".lyricsButton", showModal);
+
 
 function showModal(e) {
   e.preventDefault();
-  var button = $(e.target);
-  var songName = button.attr("data-songName");
-  var artistName = button.attr("data-artistName");
-  var coverImg = button.attr("data-coverImg");
 
+  // get the songName, artistName and coverImg values from card containing lyric button
+  var card = $(e.target).closest('[data-songName]');
+  var songName = card.attr("data-songName");
+  var artistName = card.attr("data-artistName");
+  var coverImg = card.attr("data-coverImg");
+  
+  // Reset the modal content and add a spinner to show whilst content loads
   $("#lyricsModalTitle").empty();
   $("#favouritesButton").hide();
   $("#lyricsModalContent").html(
@@ -291,7 +297,7 @@ function showModal(e) {
     method: "GET",
   })
     .then(function (response) {
-      console.log(response);
+      // load ajax query information to modal title and conent div
       $("#lyricsModalTitle").text(`${songName} by ${artistName}  - Lyrics`);
       $("#lyricsModalContent").html(response.lyrics); 
 
@@ -301,6 +307,7 @@ function showModal(e) {
       $("#favouritesButton").show();
     })
     .fail(function () {
+      // if ajax query fails, display an error message in modal
       $("#lyricsModalTitle").text("Oops!");
       $("#lyricsModalContent").text(
         "We weren't able to find lyrics for that song! :("
@@ -309,11 +316,6 @@ function showModal(e) {
     });
   $("#lyricsModal").modal("show");
 }
-
-// $( document ).ajaxError(function(event, jqxhr, settings, thrownError ) {
-//  console.log(event);
-// });
-
 
 function showPlaylist() {
   const settings = {
@@ -383,9 +385,12 @@ function showPlaylist() {
     };
       playlistRow.append(playlistTracksContainer);
 
-      //create bootstrap card
+      //create bootstrap card, add data attributes to card
       var playlistCard = $("<div>");
-      playlistCard.attr("class", "card result mt-4 w-100");
+      playlistCard.attr("class", "card result mt-4 w-100")
+        .attr("data-songName", playlistTracksArray[i].songTitle)
+        .attr("data-artistName", playlistTracksArray[i].songArtist)
+        .attr("data-coverImg", playlistTracksArray[i].coverImage);
       // songResultCard.attr('style', 'width: 12rem;');
       playlistTracksContainer.append(playlistCard);
 
@@ -451,17 +456,11 @@ function showPlaylist() {
       // songResultLyricsBtn.attr("style", "margin-right: .5rem !important;");
       playlistLyricsBtn
         .text("View Lyrics")
-        .attr("data-songName", playlistTracksArray[i].songTitle)
-        .attr("data-artistName", playlistTracksArray[i].songArtist)
-        .attr("data-coverImg", playlistTracksArray[i].coverImage);
       playlistButtonDiv.append(playlistLyricsBtn);
 
       var playlistFavBtn = $("<button>");
       playlistFavBtn
         .attr("class", "btn btn-primary flex-fill favsButton")
-        .attr("data-songName", playlistTracksArray[i].songTitle)
-        .attr("data-artistName", playlistTracksArray[i].songArtist)
-        .attr("data-coverImg", playlistTracksArray[i].coverImage);
       playlistFavBtn.text("Add to Favs");
       playlistButtonDiv.append(playlistFavBtn);
     }
@@ -475,9 +474,9 @@ $(document).on("click", ".favsButton", function () {
   $("#favourites").empty();
   var songs = JSON.parse(localStorage.getItem("songData")) || [];
   var songObject = {
-    image: $(this).attr("data-coverImg"),
-    songTitle: $(this).attr("data-songName"),
-    songArtist: $(this).attr("data-artistName")
+    image: $(this).closest("[data-coverImg]").attr("data-coverImg"),
+    songTitle: $(this).closest('[data-songName]').attr("data-songName"),
+    songArtist: $(this).closest('[data-artistName]').attr("data-artistName")
   };
   songs.push(songObject);
   localStorage.setItem("songData", JSON.stringify(songs));

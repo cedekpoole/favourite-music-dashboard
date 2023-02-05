@@ -32,9 +32,11 @@ function showLyricData(e) {
     // unknown artist. Only writing an empty string (or ajax request limit problems etc)
     //creates a response error object, otherwise it just returns an response object with a total of 0
     if (songResponse.error) {
+      resultsHeading.hide();
       invalidSearch(artist, true);
     }
     else if (songResponse.total === 0) {
+      resultsHeading.hide();
       invalidSearch(artist, false);
     }
     else {
@@ -75,10 +77,17 @@ function showLyricData(e) {
       for (let i = 0; i < songResultsArray.length; i++) {
         //create div to hold each card
         var songResultContainer = $("<div>");
-        songResultContainer.attr(
-          "class",
-          "col-md-6 col-lg-4 col-xlg-3 flex-fill d-flex align-items-stretch"
-        );
+        if(!localStorage.getItem('songData')) {
+          songResultContainer.attr(
+              "class",
+              "resultContainer col-md-6 col-lg-3  flex-fill d-flex align-items-stretch"
+            );
+      } else {
+          songResultContainer.attr(
+              "class",
+              "resultContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
+            );
+      };
         row.append(songResultContainer);
 
         //create bootstrap card
@@ -218,13 +227,27 @@ $("#cardContainer").on("click", ".favsButton", function () {
   songs.push(songObject);
   localStorage.setItem("songData", JSON.stringify(songs));
 
+  $('.resultContainer').removeClass('col-md-6 col-lg-3 ').addClass('col-xl-4 col-lg-4 col-md-6');
+  $('#resultsDiv').addClass('col-lg-8 col-md-9');
+  $('aside').show();
+
   showFavourites();
 });
 
 function clearFavourites() {
   $("#favourites").empty();
   localStorage.clear();
-}
+
+  if(!localStorage.getItem('songData')) {
+    $('aside').hide();
+    $('#resultsDiv').removeClass('col-lg-8 col-md-9');
+    $('.resultContainer').removeClass('col-xl-4 col-lg-4 col-md-6').addClass('col-md-6 col-lg-3 ');
+    
+} else {
+    $('aside').show();
+};
+
+};
 
 $("#clearFavourites").on("click", clearFavourites);
 
@@ -272,7 +295,6 @@ function showModal(e) {
 //  console.log(event);
 // });
 
-showPlaylist();
 
 function showPlaylist() {
   const settings = {
@@ -326,10 +348,20 @@ function showPlaylist() {
     for (let i = 0; i < playlistTracksArray.length; i++) {
       //create div to hold each card
       var playlistTracksContainer = $("<div>");
-      playlistTracksContainer.attr(
+
+      if(!localStorage.getItem('songData')) {
+        playlistTracksContainer
+      .attr(
         "class",
-        "col-md-6 col-lg-4 col-xlg-3 flex-fill d-flex align-items-stretch"
+        "resultContainer col-md-6 col-lg-3  flex-fill d-flex align-items-stretch"
       );
+    } else {
+        playlistTracksContainer
+        .attr(
+          "class",
+          "resultContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
+        );
+    };
       playlistRow.append(playlistTracksContainer);
 
       //create bootstrap card
@@ -427,7 +459,20 @@ $("#playlistContainer").on("click", ".favsButton", function () {
   songs.push(songObject);
   localStorage.setItem("songData", JSON.stringify(songs));
 
+  $('.resultContainer').removeClass('col-md-6 col-lg-3 ').addClass('col-xl-4 col-lg-4 col-md-6');
+  $('aside').show();
+  $('#resultsDiv').addClass('col-lg-8 col-md-9');
+
   showFavourites();
 });
 
 showFavourites();
+showPlaylist();
+
+
+if(!localStorage.getItem('songData')) {
+  $('aside').hide();
+  $('#resultsDiv').removeClass('col-lg-8 col-md-9');
+} else {
+  $('aside').show();
+};

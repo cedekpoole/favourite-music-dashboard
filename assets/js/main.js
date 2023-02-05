@@ -45,7 +45,7 @@ function showLyricData(e) {
       $("#search-input").val("");
 
       // adding artist name to h2
-      resultsHeading.text("Most Popular Songs by " + artist);
+      resultsHeading.text("Top Results for " + artist);
       resultsHeading.show();
 
       // store song response information
@@ -121,7 +121,22 @@ function showLyricData(e) {
         // add line
         var songResultDivider = $("<hr>");
         songResultDivider.attr("class", "hr");
-        songResultDivider.attr("style", "margin: .5rem 0 !important;");
+        songResultDivider.attr("style", "margin: .5rem 0 !important; color: white;");
+        songResultCardBody.append(songResultDivider);
+
+        //add artist name
+        var songResultArtistName = $("<h3>");
+        songResultArtistName.attr(
+          "style",
+          "font-size: calc(.5rem + .6vw) !important; margin-bottom: 0;"
+        );
+        songResultArtistName.text("Artist: " + songResultsArray[i].songArtist);
+        songResultCardBody.append(songResultArtistName);
+
+        // add line
+        var songResultDivider = $("<hr>");
+        songResultDivider.attr("class", "hr");
+        songResultDivider.attr("style", "margin: .5rem 0 !important; color: white;");
         songResultCardBody.append(songResultDivider);
 
         //add album name
@@ -398,7 +413,7 @@ function showPlaylist() {
       // add line
       var playlistDivider = $("<hr>");
       playlistDivider.attr("class", "hr");
-      playlistDivider.attr("style", "margin: .5rem 0 !important;");
+      playlistDivider.attr("style", "margin: .5rem 0 !important; color: white;");
       playlistCardBody.append(playlistDivider);
 
       // add artist
@@ -413,7 +428,7 @@ function showPlaylist() {
       // add line
       var playlistDivider2 = $("<hr>");
       playlistDivider2.attr("class", "hr");
-      playlistDivider2.attr("style", "margin: .5rem 0 !important;");
+      playlistDivider2.attr("style", "margin: .5rem 0 !important; color: white;");
       playlistCardBody.append(playlistDivider2);
 
       //add album name

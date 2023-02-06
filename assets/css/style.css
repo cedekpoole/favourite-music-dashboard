@@ -31,7 +31,7 @@ aside.col-lg-4 p-4 {
 }
 
 .btn {
-    --bs-btn-border-radius: 0px;
+    --bs-btn-border-radius: 20px;
 }
 
 *, html {

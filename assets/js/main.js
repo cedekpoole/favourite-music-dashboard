@@ -5,19 +5,27 @@ var resultsHeading = $("#resultsHeading");
 resultsHeading.hide();
 $("#clearFavourites").hide();
 
+//setting currentIndex for api url
+currentIndex = -12;
+
 function showLyricData(e) {
-  e.preventDefault();
+  // e.preventDefault();
 
   $("#playlistContainer").empty();
 
+  let artist = JSON.parse(localStorage.getItem('search')) || $('#search-input').val();
+  localStorage.setItem('search', JSON.stringify(artist));
+
+  currentIndex += 12;
+
   // Using jQuery, connect this to the value of the search input
-  let artist = $("#search-input").val();
+  // let artist = $("#search-input").val();
 
   // Ajax request for artist (Deezer API)
   let settings = {
     async: true,
     crossDomain: true,
-    url: "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + artist,
+    url: "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + artist + "&index=" + currentIndex +"&limit=12",
     method: "GET",
     headers: {
       "X-RapidAPI-Key": "ca3e3b7c4dmshcf0d18644a9b128p15b157jsnca8487f0f2a9",
@@ -40,7 +48,7 @@ function showLyricData(e) {
       invalidSearch(artist, false);
     } else {
       // clear search field
-      $("#search-input").val("");
+      // $("#search-input").val("");
 
       // adding artist name to h2
       resultsHeading.text("Top Results for " + artist);
@@ -52,9 +60,9 @@ function showLyricData(e) {
 
       // loop through the data for the first 12 responses
       $.each(songResults, function (index, value) {
-        if (index == 12) {
-          return false;
-        }
+        // if (index == 12) {
+        //   return false;
+        // }
         // get the title, artist, cover image and album for each song
         songsObj = {
           songTitle: value.title,
@@ -67,13 +75,12 @@ function showLyricData(e) {
         songResultsArray.push(songsObj);
       });
 
-      currentIteration = 0;
       var row = $('<div class="row w-100 justify-content-between"></div>');
 
-      $("#cardContainer").empty();
+      // $("#cardContainer").empty();
 
       // loop through the stored song info and display in bootstrap cards
-      for (let i = 0; i < songResultsArray.length; i++) {
+      for (let i = 0; i < 12 && i < songResultsArray.length; i++) {
         //create div to hold each card
         var songResultContainer = $("<div>");
         if (!localStorage.getItem("songData")) {
@@ -181,10 +188,25 @@ function showLyricData(e) {
         songResultFavBtn.text("Add to Favs");
         songResultButtonDiv.append(songResultFavBtn);
 
-        currentIteration++;
+        // currentIteration++;
+      }
+
+      if (!$('#loadMoreButton').length) {
+        var loadMoreButton = $('<button id="loadMoreButton">Load More</button>');
+        var loadMoreButtonDiv = $('<div class="d-flex justify-content-center align-items-center>"</div>');
+        $(loadMoreButtonDiv).append(loadMoreButton);
+        $('#main').append(loadMoreButtonDiv);
+        $('#loadMoreButton').attr('class', 'btn btn-primary m-4');
+
+        $('#loadMoreButton').on('click', function() {
+            artist = localStorage.getItem('search');
+            showLyricData();
+            currentIndex += 12;
+        })
       }
 
       $("#cardContainer").append(row);
+      $('#search-input').val('');
     }
   });
 }
@@ -210,7 +232,16 @@ function invalidSearch(searchString, apiFail) {
   $("#lyricsModal").modal("show");
 }
 
-$("#search-button").on("click", showLyricData);
+$("#search-button").on("click", function(e) {
+  e.preventDefault();
+  let artist = $('#search-input').val();
+  localStorage.setItem('search', JSON.stringify(artist));
+
+  $("#cardContainer").empty();
+
+  showLyricData();
+});
+
 $("#retryButton").on("click", showLyricData);
 
 // Create a function that reveals favourite song cards
@@ -235,12 +266,12 @@ function showFavourites() {
         'alt="...">' +
         "</div>" +
         '<div class="flex-fill d-flex flex-column justify-content-center align-items-center p-3">' +
-        '<div class="mb-1 pt-3">' +
+        '<div class="mb-1 pt-3 text-center">' +
         '<h5 class="card-title">' +
         song.songTitle +
         "</h5>" +
         "</div>" +
-        '<div class="pb-2">' +
+        '<div class="pb-2 text-center">' +
         '<button class="btn mb-1 btn-primary lyricsButton">View Lyrics</button>' +
         '<button class="btn btn-primary deleteButton">Delete Song</button>' +
         "</div>" +

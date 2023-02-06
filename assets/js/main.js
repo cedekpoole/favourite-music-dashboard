@@ -1,7 +1,11 @@
 var resultsHeading = $("#resultsHeading");
-
 resultsHeading.hide();
+
+var playlistHeading = $('#playlistHeading');
+playlistHeading.hide();
+
 $("#clearFavourites").hide();
+$('#backButton').hide();
 
 //setting currentIndex for api url
 currentIndex = -12;
@@ -200,184 +204,6 @@ function showLyricData() {
   });
 }
 
-// when deezer ajax query fails, update the modal content to be an appropriate message to the error thrown
-function invalidSearch(searchString, apiFail) {
-  $("#lyricsModalTitle").text("Oops!");
-  $("#retryButton").hide();
-
-  if (searchString === "") {
-    $("#lyricsModalContent").text(`You have to search for something!`);
-  } else if (apiFail) {
-    $("#lyricsModalContent").text(
-      `Our system failed to handle your request at this moment. Please try again.`
-    );
-    $("#retryButton").show();
-  } else {
-    $("#lyricsModalContent").text(
-      `We weren't able to find any results for "${searchString}"`
-    );
-  }
-  $("#favouritesButton").hide();
-  $("#lyricsModal").modal("show");
-}
-
-$("#search-button").on("click", function (e) {
-  e.preventDefault();
-  let artist = $('#search-input').val();
-  localStorage.setItem('search', JSON.stringify(artist));
-
-  $("#cardContainer").empty();
-  playlistHeading.hide();
-  showLyricData();
-  $('#loadMoreButton2').hide();
-});
-
-$("#retryButton").on("click", showLyricData);
-
-// Create a function that reveals favourite song cards
-function showFavourites() {
-  // If nothing is saved to local storage, set the variable to an empty array
-  var songs = JSON.parse(localStorage.getItem("songData")) || [];
-  // Loop through local storage to create a card for each song
-  for (var song of songs) {
-    var card = $("<div>");
-    card
-      .attr("class", "card mb-3")
-      .attr("style", "max-width: 540px;")
-      .attr("data-songName", song.songTitle)
-      .attr("data-artistName", song.songArtist)
-      .attr("data-coverImg", song.image);
-    card.html(
-      '<div class="row d-flex flex-row flex-md-wrap flex-lg-nowrap g-0">' +
-      '<div class="flex-fill d-flex d-sm-block">' +
-      '<img src="' +
-      song.image +
-      '" class="h-100 w-100"' +
-      'alt="...">' +
-      "</div>" +
-      '<div class="flex-fill d-flex flex-column justify-content-center align-items-center p-3">' +
-      '<div class="mb-1 pt-3 text-center">' +
-      '<h5 class="card-title">' +
-      song.songTitle +
-      "</h5>" +
-      "</div>" +
-      '<div class="pb-2 text-center">' +
-      '<button class="btn mb-1 btn-primary lyricsButton">View Lyrics</button>' +
-      '<button class="btn btn-primary deleteButton">Delete Song</button>' +
-      "</div>" +
-      "</div>" +
-      "</div>"
-    );
-    $("#favourites").append(card);
-    $("#clearFavourites").html(
-      '<button id="clearFavsButton" class="btn rounded-sm btn-dark btn-block mt-3">Clear Favourites</button>'
-    );
-    if (songs.length === 0) {
-      $("#clearFavourites").hide();
-    } else {
-      $("#clearFavourites").show();
-    }
-  }
-}
-
-// Create a function that removes songs from local data and clears favourites cards
-function clearFavourites() {
-  $("#favourites").empty();
-  localStorage.clear();
-  $("#clearFavourites").hide();
-
-  if (!localStorage.getItem("songData")) {
-    $("aside").hide();
-    $("#resultsDiv").removeClass("col-lg-8 col-md-9");
-    $(".resultContainer")
-      .removeClass("col-xl-4 col-lg-4 col-md-6")
-      .addClass("col-md-6 col-lg-3 ");
-  } else {
-    $("aside").show();
-  }
-}
-
-// When 'delete song' button is clicked, remove that particular song from local storage
-$(document).on("click", ".deleteButton", function () {
-  $("#favourites").empty();
-  var songData = JSON.parse(localStorage.getItem("songData"));
-  console.log(songData);
-  var songObject = {
-    image: $(this).closest("[data-coverImg]").attr("data-coverImg"),
-    songTitle: $(this).closest("[data-songName]").attr("data-songName"),
-    songArtist: $(this).closest("[data-artistName]").attr("data-artistName"),
-  };
-  var removeIndex = songData.findIndex(
-    (song) => song.songTitle === songObject.songTitle
-  );
-  songData.splice(removeIndex, 1);
-  localStorage.setItem("songData", JSON.stringify(songData));
-
-  showFavourites();
-
-  if (songData.length === 0) {
-    clearFavourites();
-  }
-});
-
-// When 'clear favourites' button is clicked, clear favourites cards
-$("#clearFavourites").on("click", clearFavourites);
-
-// when a lyrics button is clicked then showModal()
-$(document).on("click", ".lyricsButton", showModal);
-
-function showModal(e) {
-  e.preventDefault();
-
-  // get the songName, artistName and coverImg values from card containing lyric button
-  var card = $(e.target).closest("[data-songName]");
-  var songName = card.attr("data-songName");
-  var artistName = card.attr("data-artistName");
-  var coverImg = card.attr("data-coverImg");
-
-  // Reset the modal content and add a spinner to show whilst content loads
-  $("#lyricsModalTitle").empty();
-  $("#favouritesButton").hide();
-  $("#lyricsModalContent").html(
-    '<div class="d-flex justify-content-center">' +
-    '<div class="spinner-border"' +
-    'role="status">' +
-    "</div>" +
-    "</div>"
-  );
-  $("#retryButton").hide();
-
-  queryURL = "https://some-random-api.ml/lyrics?title=" + songName + artistName;
-
-  $.ajax({
-    url: queryURL,
-    method: "GET",
-  })
-    .then(function (response) {
-      // load ajax query information to modal title and conent div
-      $("#lyricsModalTitle").text(`${songName} by ${artistName}  - Lyrics`);
-      $("#lyricsModalContent").html(response.lyrics);
-
-      $("#favouritesButton")
-        .attr("data-songName", songName)
-        .attr("data-artistName", artistName)
-        .attr("data-coverImg", coverImg);
-      $("#favouritesButton").show();
-    })
-    .fail(function () {
-      // if ajax query fails, display an error message in modal
-      $("#lyricsModalTitle").text("Oops!");
-      $("#lyricsModalContent").text(
-        "We weren't able to find lyrics for that song! :("
-      );
-      $("#favouritesButton").hide();
-    });
-  $("#lyricsModal").modal("show");
-}
-
-var playlistHeading = $('#playlistHeading');
-playlistHeading.hide();
-
 function showPlaylist() {
 
   currentIndex += 12;
@@ -562,7 +388,7 @@ function showPlaylist() {
         }, 'slow');
         if (playlistTracksArray.length - currentIndex < 12) {
           $('#loadMoreButton2').hide();
-          
+
         };
         currentIndex += 12;
         resultsHeading.hide();
@@ -575,6 +401,181 @@ function showPlaylist() {
   });
 }
 
+// Create a function that reveals favourite song cards
+function showFavourites() {
+  // If nothing is saved to local storage, set the variable to an empty array
+  var songs = JSON.parse(localStorage.getItem("songData")) || [];
+  // Loop through local storage to create a card for each song
+  for (var song of songs) {
+    var card = $("<div>");
+    card
+      .attr("class", "card mb-3")
+      .attr("style", "max-width: 540px;")
+      .attr("data-songName", song.songTitle)
+      .attr("data-artistName", song.songArtist)
+      .attr("data-coverImg", song.image);
+    card.html(
+      '<div class="row d-flex flex-row flex-md-wrap flex-lg-nowrap g-0">' +
+      '<div class="flex-fill d-flex d-sm-block">' +
+      '<img src="' +
+      song.image +
+      '" class="h-100 w-100"' +
+      'alt="...">' +
+      "</div>" +
+      '<div class="flex-fill d-flex flex-column justify-content-center align-items-center p-3">' +
+      '<div class="mb-1 pt-3 text-center">' +
+      '<h5 class="card-title">' +
+      song.songTitle +
+      "</h5>" +
+      "</div>" +
+      '<div class="pb-2 text-center">' +
+      '<button class="btn mb-1 btn-primary lyricsButton">View Lyrics</button>' +
+      '<button class="btn btn-primary deleteButton">Delete Song</button>' +
+      "</div>" +
+      "</div>" +
+      "</div>"
+    );
+    $("#favourites").append(card);
+    $("#clearFavourites").html(
+      '<button id="clearFavsButton" class="btn rounded-sm btn-dark btn-block mt-3">Clear Favourites</button>'
+    );
+    if (songs.length === 0) {
+      $("#clearFavourites").hide();
+    } else {
+      $("#clearFavourites").show();
+    }
+  }
+}
+
+// Create a function that removes songs from local data and clears favourites cards
+function clearFavourites() {
+  $("#favourites").empty();
+  localStorage.clear();
+  $("#clearFavourites").hide();
+
+  if (!localStorage.getItem("songData")) {
+    $("aside").hide();
+    $("#resultsDiv").removeClass("col-lg-8 col-md-9");
+    $(".resultContainer")
+      .removeClass("col-xl-4 col-lg-4 col-md-6")
+      .addClass("col-md-6 col-lg-3 ");
+  } else {
+    $("aside").show();
+  }
+}
+
+// when deezer ajax query fails, update the modal content to be an appropriate message to the error thrown
+function invalidSearch(searchString, apiFail) {
+  $("#lyricsModalTitle").text("Oops!");
+  $("#retryButton").hide();
+
+  if (searchString === "") {
+    $("#lyricsModalContent").text(`You have to search for something!`);
+  } else if (apiFail) {
+    $("#lyricsModalContent").text(
+      `Our system failed to handle your request at this moment. Please try again.`
+    );
+    $("#retryButton").show();
+  } else {
+    $("#lyricsModalContent").text(
+      `We weren't able to find any results for "${searchString}"`
+    );
+  }
+  $("#favouritesButton").hide();
+  $("#lyricsModal").modal("show");
+}
+
+function showModal(e) {
+  e.preventDefault();
+
+  // get the songName, artistName and coverImg values from card containing lyric button
+  var card = $(e.target).closest("[data-songName]");
+  var songName = card.attr("data-songName");
+  var artistName = card.attr("data-artistName");
+  var coverImg = card.attr("data-coverImg");
+
+  // Reset the modal content and add a spinner to show whilst content loads
+  $("#lyricsModalTitle").empty();
+  $("#favouritesButton").hide();
+  $("#lyricsModalContent").html(
+    '<div class="d-flex justify-content-center">' +
+    '<div class="spinner-border"' +
+    'role="status">' +
+    "</div>" +
+    "</div>"
+  );
+  $("#retryButton").hide();
+
+  queryURL = "https://some-random-api.ml/lyrics?title=" + songName + artistName;
+
+  $.ajax({
+    url: queryURL,
+    method: "GET",
+  })
+    .then(function (response) {
+      // load ajax query information to modal title and conent div
+      $("#lyricsModalTitle").text(`${songName} by ${artistName}  - Lyrics`);
+      $("#lyricsModalContent").html(response.lyrics);
+
+      $("#favouritesButton")
+        .attr("data-songName", songName)
+        .attr("data-artistName", artistName)
+        .attr("data-coverImg", coverImg);
+      $("#favouritesButton").show();
+    })
+    .fail(function () {
+      // if ajax query fails, display an error message in modal
+      $("#lyricsModalTitle").text("Oops!");
+      $("#lyricsModalContent").text(
+        "We weren't able to find lyrics for that song! :("
+      );
+      $("#favouritesButton").hide();
+    });
+  $("#lyricsModal").modal("show");
+}
+
+$("#search-button").on("click", function (e) {
+  e.preventDefault();
+  let artist = $('#search-input').val();
+  localStorage.setItem('search', JSON.stringify(artist));
+
+  $("#cardContainer").empty();
+  playlistHeading.hide();
+  showLyricData();
+  $('#loadMoreButton2').hide();
+});
+
+$("#retryButton").on("click", showLyricData);
+
+// When 'clear favourites' button is clicked, clear favourites cards
+$("#clearFavourites").on("click", clearFavourites);
+
+// When 'delete song' button is clicked, remove that particular song from local storage
+$(document).on("click", ".deleteButton", function () {
+  $("#favourites").empty();
+  var songData = JSON.parse(localStorage.getItem("songData"));
+  console.log(songData);
+  var songObject = {
+    image: $(this).closest("[data-coverImg]").attr("data-coverImg"),
+    songTitle: $(this).closest("[data-songName]").attr("data-songName"),
+    songArtist: $(this).closest("[data-artistName]").attr("data-artistName"),
+  };
+  var removeIndex = songData.findIndex(
+    (song) => song.songTitle === songObject.songTitle
+  );
+  songData.splice(removeIndex, 1);
+  localStorage.setItem("songData", JSON.stringify(songData));
+
+  showFavourites();
+
+  if (songData.length === 0) {
+    clearFavourites();
+  }
+});
+
+// when a lyrics button is clicked then showModal()
+$(document).on("click", ".lyricsButton", showModal);
+
 // When the 'Add to favourites' button is clicked, save song to local storage
 $(document).on("click", ".favsButton", function () {
   $("#favourites").empty();
@@ -584,6 +585,7 @@ $(document).on("click", ".favsButton", function () {
     songTitle: $(this).closest("[data-songName]").attr("data-songName"),
     songArtist: $(this).closest("[data-artistName]").attr("data-artistName"),
   };
+  
   songs.push(songObject);
   // To stop duplication of the the songData objects, loop through the array and remove them
   //Use the reduce method to go through every item and see if we already have an object added to the accumulator with the same songObject as the current item.
@@ -610,9 +612,6 @@ $(document).on("click", ".favsButton", function () {
   showFavourites();
 });
 
-showFavourites();
-showPlaylist();
-
 if (!localStorage.getItem("songData")) {
   $("aside").hide();
   $("#resultsDiv").removeClass("col-lg-8 col-md-9");
@@ -633,7 +632,7 @@ $(document).ready(function () {
     return false;
   });
 
-  $('#backButton').on('click', function() {
+  $('#backButton').on('click', function () {
     $('#cardContainer').empty();
     $('#resultsHeading').hide();
     $('#loadMoreButton').hide();
@@ -641,7 +640,9 @@ $(document).ready(function () {
     $('#backButton').hide();
     currentIndex = -12;
     showPlaylist();
-});
+  });
 
 });
-$('#backButton').hide();
+
+showFavourites();
+showPlaylist();

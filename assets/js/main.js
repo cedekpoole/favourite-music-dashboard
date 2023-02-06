@@ -1,15 +1,13 @@
-console.log("hey");
 var resultsHeading = $("#resultsHeading");
 
-// $("#invalid-input").hide();
 resultsHeading.hide();
 $("#clearFavourites").hide();
 
 //setting currentIndex for api url
 currentIndex = -12;
 
-function showLyricData(e) {
-  // e.preventDefault();
+function showLyricData() {
+
   $('#backButton').show();
   $("#playlistContainer").empty();
 
@@ -17,9 +15,6 @@ function showLyricData(e) {
   localStorage.setItem('search', JSON.stringify(artist));
 
   currentIndex += 12;
-
-  // Using jQuery, connect this to the value of the search input
-  // let artist = $("#search-input").val();
 
   // Ajax request for artist (Deezer API)
   let settings = {
@@ -34,8 +29,6 @@ function showLyricData(e) {
   };
 
   $.ajax(settings).done(function (songResponse) {
-    // console.log(songResponse);
-    // Get query URL for the lyric API
 
     // Account for both submitting an empty string or writing an
     // unknown artist. Only writing an empty string (or ajax request limit problems etc)
@@ -47,8 +40,6 @@ function showLyricData(e) {
       resultsHeading.hide();
       invalidSearch(artist, false);
     } else {
-      // clear search field
-      // $("#search-input").val("");
 
       // adding artist name to h2
       resultsHeading.text("Top Results for " + artist);
@@ -60,9 +51,7 @@ function showLyricData(e) {
 
       // loop through the data for the first 12 responses
       $.each(songResults, function (index, value) {
-        // if (index == 12) {
-        //   return false;
-        // }
+
         // get the title, artist, cover image and album for each song
         songsObj = {
           songTitle: value.title,
@@ -70,14 +59,12 @@ function showLyricData(e) {
           coverImage: value.album.cover_big,
           songAlbum: value.album.title,
         };
-        console.log(songsObj);
 
         songResultsArray.push(songsObj);
       });
 
       var row = $('<div class="row w-100 justify-content-between"></div>');
 
-      // $("#cardContainer").empty();
 
       // loop through the stored song info and display in bootstrap cards
       for (let i = 0; i < 12 && i < songResultsArray.length; i++) {
@@ -188,7 +175,6 @@ function showLyricData(e) {
         songResultFavBtn.text("Add to Favs");
         songResultButtonDiv.append(songResultFavBtn);
 
-        // currentIteration++;
       }
 
       if (!$('#loadMoreButton').length) {
@@ -416,9 +402,7 @@ function showPlaylist() {
 
     // loop through the data for the first 12 responses
     $.each(playlistTracks, function (index, value) {
-      // if (index == 12) {
-      //   return false;
-      // }
+
       // get the title, artist, cover image and album for each song
       playlistObj = {
         songTitle: value.title,
@@ -435,14 +419,8 @@ function showPlaylist() {
       '<div class="row w-100 justify-content-between"></div>'
     );
 
-    // var playlistHeading = $("<h2>");
-    // playlistHeading
-    //   .attr("class", "card-px-2 mt-4")
-    //   .attr("style", "text-transform: Capitalize;")
-    //   .attr("id", "playlistHeading");
     playlistHeading.text("Hits UK Playlist");
     playlistHeading.show();
-    // $("#playlistContainer").prepend(playlistHeading);
 
     const columns = 12;
 
@@ -587,6 +565,7 @@ function showPlaylist() {
           
         };
         currentIndex += 12;
+        resultsHeading.hide();
         showPlaylist();
 
       })
@@ -657,6 +636,8 @@ $(document).ready(function () {
   $('#backButton').on('click', function() {
     $('#cardContainer').empty();
     $('#resultsHeading').hide();
+    $('#loadMoreButton').hide();
+    $('#loadMoreButton2').show();
     $('#backButton').hide();
     currentIndex = -12;
     showPlaylist();

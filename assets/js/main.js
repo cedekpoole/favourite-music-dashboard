@@ -238,8 +238,9 @@ $("#search-button").on("click", function(e) {
   localStorage.setItem('search', JSON.stringify(artist));
 
   $("#cardContainer").empty();
-
+  playlistHeading.hide();
   showLyricData();
+  $('#loadMoreButton2').hide();
 });
 
 $("#retryButton").on("click", showLyricData);
@@ -567,14 +568,14 @@ function showPlaylist() {
       }
     }
 
-    if (!$('#loadMoreButton').length) {
-      var loadMoreButton = $('<button id="loadMoreButton">Load More</button>');
-      var loadMoreButtonDiv = $('<div class="d-flex justify-content-center align-items-center>"</div>');
-      $(loadMoreButtonDiv).append(loadMoreButton);
-      $('#main').append(loadMoreButtonDiv);
-      $('#loadMoreButton').attr('class', 'btn btn-primary m-4');
+    if (!$('#loadMoreButton2').length) {
+      var loadMoreButton2 = $('<button id="loadMoreButton2">Load More</button>');
+      var loadMoreButtonDiv2 = $('<div class="d-flex justify-content-center align-items-center>"</div>');
+      $(loadMoreButtonDiv2).append(loadMoreButton2);
+      $('#main').append(loadMoreButtonDiv2);
+      $('#loadMoreButton2').attr('class', 'btn btn-primary m-4');
 
-      $('#loadMoreButton').on('click', function() {
+      $('#loadMoreButton2').on('click', function() {
           // artist = localStorage.getItem('search');
           currentIndex += 12;
           showPlaylist();

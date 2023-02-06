@@ -25,7 +25,7 @@ function showLyricData(e) {
   let settings = {
     async: true,
     crossDomain: true,
-    url: "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + artist + "&index=" + currentIndex +"&limit=12",
+    url: "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + artist + "&index=" + currentIndex + "&limit=12",
     method: "GET",
     headers: {
       "X-RapidAPI-Key": "ca3e3b7c4dmshcf0d18644a9b128p15b157jsnca8487f0f2a9",
@@ -198,10 +198,13 @@ function showLyricData(e) {
         $('#main').append(loadMoreButtonDiv);
         $('#loadMoreButton').attr('class', 'btn btn-primary m-4');
 
-        $('#loadMoreButton').on('click', function() {
-            artist = localStorage.getItem('search');
-            showLyricData();
-            currentIndex += 12;
+        $('#loadMoreButton').on('click', function () {
+          $('html, body').animate({
+            scrollTop: $(window).scrollTop() + $(window).height() * 0.5
+          }, 'slow');
+          artist = localStorage.getItem('search');
+          showLyricData();
+          currentIndex += 12;
         })
       }
 
@@ -232,7 +235,7 @@ function invalidSearch(searchString, apiFail) {
   $("#lyricsModal").modal("show");
 }
 
-$("#search-button").on("click", function(e) {
+$("#search-button").on("click", function (e) {
   e.preventDefault();
   let artist = $('#search-input').val();
   localStorage.setItem('search', JSON.stringify(artist));
@@ -260,24 +263,24 @@ function showFavourites() {
       .attr("data-coverImg", song.image);
     card.html(
       '<div class="row d-flex flex-row flex-md-wrap flex-lg-nowrap g-0">' +
-        '<div class="flex-fill d-flex d-sm-block">' +
-        '<img src="' +
-        song.image +
-        '" class="h-100 w-100"' +
-        'alt="...">' +
-        "</div>" +
-        '<div class="flex-fill d-flex flex-column justify-content-center align-items-center p-3">' +
-        '<div class="mb-1 pt-3 text-center">' +
-        '<h5 class="card-title">' +
-        song.songTitle +
-        "</h5>" +
-        "</div>" +
-        '<div class="pb-2 text-center">' +
-        '<button class="btn mb-1 btn-primary lyricsButton">View Lyrics</button>' +
-        '<button class="btn btn-primary deleteButton">Delete Song</button>' +
-        "</div>" +
-        "</div>" +
-        "</div>"
+      '<div class="flex-fill d-flex d-sm-block">' +
+      '<img src="' +
+      song.image +
+      '" class="h-100 w-100"' +
+      'alt="...">' +
+      "</div>" +
+      '<div class="flex-fill d-flex flex-column justify-content-center align-items-center p-3">' +
+      '<div class="mb-1 pt-3 text-center">' +
+      '<h5 class="card-title">' +
+      song.songTitle +
+      "</h5>" +
+      "</div>" +
+      '<div class="pb-2 text-center">' +
+      '<button class="btn mb-1 btn-primary lyricsButton">View Lyrics</button>' +
+      '<button class="btn btn-primary deleteButton">Delete Song</button>' +
+      "</div>" +
+      "</div>" +
+      "</div>"
     );
     $("#favourites").append(card);
     $("#clearFavourites").html(
@@ -351,10 +354,10 @@ function showModal(e) {
   $("#favouritesButton").hide();
   $("#lyricsModalContent").html(
     '<div class="d-flex justify-content-center">' +
-      '<div class="spinner-border"' +
-      'role="status">' +
-      "</div>" +
-      "</div>"
+    '<div class="spinner-border"' +
+    'role="status">' +
+    "</div>" +
+    "</div>"
   );
   $("#retryButton").hide();
 
@@ -432,7 +435,7 @@ function showPlaylist() {
       '<div class="row w-100 justify-content-between"></div>'
     );
 
-  // var playlistHeading = $("<h2>");
+    // var playlistHeading = $("<h2>");
     // playlistHeading
     //   .attr("class", "card-px-2 mt-4")
     //   .attr("style", "text-transform: Capitalize;")
@@ -445,7 +448,7 @@ function showPlaylist() {
 
 
     // loop through the stored song info and display in bootstrap cards
-    for (let i = 0; i< 12 && i < playlistTracksArray.length; i++) {
+    for (let i = 0; i < 12 && i < playlistTracksArray.length; i++) {
       //create div to hold each card
       var playlistTracksContainer = $("<div>");
 
@@ -546,24 +549,24 @@ function showPlaylist() {
       playlistFavBtn.text("Add to Favs");
       playlistButtonDiv.append(playlistFavBtn);
 
-      if (i === playlistTracksArray.length -1) {
+      if (i === playlistTracksArray.length - 1) {
         let remainingColumns = columns - playlistTracksArray.length % columns;
         for (let j = 0; j < remainingColumns; j++) {
-            let emptyColumn = $('<div>');
-            if(!localStorage.getItem('songData')) {
-                emptyColumn
+          let emptyColumn = $('<div>');
+          if (!localStorage.getItem('songData')) {
+            emptyColumn
               .attr(
                 "class",
                 "resultContainer col-md-6 col-lg-3  flex-fill d-flex align-items-stretch"
               );
-            } else {
-                emptyColumn
-                .attr(
-                  "class",
-                  "resultContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
-                );
-            };
-            playlistRow.append(emptyColumn);
+          } else {
+            emptyColumn
+              .attr(
+                "class",
+                "resultContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
+              );
+          };
+          playlistRow.append(emptyColumn);
         }
       }
     }
@@ -575,10 +578,17 @@ function showPlaylist() {
       $('#main').append(loadMoreButtonDiv2);
       $('#loadMoreButton2').attr('class', 'btn btn-primary m-4');
 
-      $('#loadMoreButton2').on('click', function() {
-          // artist = localStorage.getItem('search');
-          currentIndex += 12;
-          showPlaylist();
+      $('#loadMoreButton2').on('click', function () {
+        $('html, body').animate({
+          scrollTop: $(window).scrollTop() + $(window).height() * 0.5
+        }, 'slow');
+        if (playlistTracksArray.length - currentIndex < 12) {
+          $('#loadMoreButton2').hide();
+          
+        };
+        currentIndex += 12;
+        showPlaylist();
+
       })
     }
 
@@ -631,16 +641,16 @@ if (!localStorage.getItem("songData")) {
   $("aside").show();
 }
 
-$(document).ready(function() {
-  $(window).scroll(function() {
-      if ($(this).scrollTop() > 20) {
-          $('#backToTop').fadeIn();
-      } else {
-          $('#backToTop').fadeOut();
-      }
+$(document).ready(function () {
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 20) {
+      $('#backToTop').fadeIn();
+    } else {
+      $('#backToTop').fadeOut();
+    }
   });
-  $('#backToTop').click(function() {
-      $('html, body').animate({ scrollTop: 0}, 'normal');
-      return false;
+  $('#backToTop').click(function () {
+    $('html, body').animate({ scrollTop: 0 }, 'normal');
+    return false;
   });
 });

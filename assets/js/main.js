@@ -10,7 +10,7 @@ currentIndex = -12;
 
 function showLyricData(e) {
   // e.preventDefault();
-
+  $('#backButton').show();
   $("#playlistContainer").empty();
 
   let artist = JSON.parse(localStorage.getItem('search')) || $('#search-input').val();
@@ -657,8 +657,10 @@ $(document).ready(function () {
   $('#backButton').on('click', function() {
     $('#cardContainer').empty();
     $('#resultsHeading').hide();
+    $('#backButton').hide();
     currentIndex = -12;
     showPlaylist();
 });
 
 });
+$('#backButton').hide();

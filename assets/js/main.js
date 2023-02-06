@@ -653,4 +653,12 @@ $(document).ready(function () {
     $('html, body').animate({ scrollTop: 0 }, 'normal');
     return false;
   });
+
+  $('#backButton').on('click', function() {
+    $('#cardContainer').empty();
+    $('#resultsHeading').hide();
+    currentIndex = -12;
+    showPlaylist();
+});
+
 });

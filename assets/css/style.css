@@ -75,6 +75,9 @@ aside.col-lg-4 p-4 {
     #favouritesHeading, #clearFavourites {
         text-align: center !important;
     }
+    #favourites {
+        align-items: center;
+    }
 }
 
 #search-form input:focus-visible {

@@ -58,7 +58,7 @@ aside.col-lg-4 p-4 {
     color: #ff6500;
 }
 
-.modal-content, .card{
+.modal-content, .card:not(.favCards) {
     opacity: 90%;
     border-radius: 20px;
 }
@@ -69,4 +69,14 @@ aside.col-lg-4 p-4 {
 
 .lyricsButton, .favsButton, .deleteButton{
     border-radius: 20px;
+}
+
+@media screen and (max-width: 991px) {
+    #favouritesHeading, #clearFavourites {
+        text-align: center !important;
+    }
+}
+
+#search-form input:focus-visible {
+outline: none;
 }

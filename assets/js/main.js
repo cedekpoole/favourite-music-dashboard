@@ -118,7 +118,7 @@ function showLyricData() {
         songResultTitle.attr("class", "card-title");
         songResultTitle.attr(
           "style",
-          "font-size: calc(.5rem + .9vw) !important; margin-bottom: 0 !important;"
+          "font-size: calc(1rem + .5vw) !important; margin-bottom: 0 !important;"
         );
         songResultTitle.text(songResultsArray[i].songTitle);
         songResultCardBody.append(songResultTitle);
@@ -136,7 +136,7 @@ function showLyricData() {
         var songResultArtistName = $("<h3>");
         songResultArtistName.attr(
           "style",
-          "font-size: calc(.5rem + .6vw) !important; margin-bottom: 0;"
+          "font-size: calc(.8rem + .2vw) !important; margin-bottom: 0;"
         );
         songResultArtistName.text("Artist: " + songResultsArray[i].songArtist);
         songResultCardBody.append(songResultArtistName);
@@ -154,7 +154,7 @@ function showLyricData() {
         var songResultAlbumName = $("<h3>");
         songResultAlbumName.attr(
           "style",
-          "font-size: calc(.5rem + .6vw) !important; margin-bottom: 2rem;"
+          "font-size: calc(.8rem + .2vw) !important; margin-bottom: 2rem;"
         );
         songResultAlbumName.text("Album: " + songResultsArray[i].songAlbum);
         songResultCardBody.append(songResultAlbumName);
@@ -295,7 +295,7 @@ function showPlaylist() {
       playlistTitle.attr("class", "card-title");
       playlistTitle.attr(
         "style",
-        "font-size: calc(.5rem + .9vw) !important; margin-bottom: 0 !important;"
+        "font-size: calc(1rem + .5vw) !important; margin-bottom: 0 !important;"
       );
       playlistTitle.text(playlistTracksArray[i].songTitle);
       playlistCardBody.append(playlistTitle);
@@ -313,7 +313,7 @@ function showPlaylist() {
       var playlistArtistName = $("<h3>");
       playlistArtistName.attr(
         "style",
-        "font-size: calc(.5rem + .6vw) !important; margin-bottom: 0 !important;"
+        "font-size: calc(.8rem + .2vw) !important; margin-bottom: 0 !important;"
       );
       playlistArtistName.text("By " + playlistTracksArray[i].songArtist);
       playlistCardBody.append(playlistArtistName);
@@ -331,7 +331,7 @@ function showPlaylist() {
       var playlistAlbumName = $("<h3>");
       playlistAlbumName.attr(
         "style",
-        "font-size: calc(.5rem + .6vw) !important; margin-bottom: 2rem;"
+        "font-size: calc(.8rem + .2vw) !important; margin-bottom: 2rem;"
       );
       playlistAlbumName.text("Album: " + playlistTracksArray[i].songAlbum);
       playlistCardBody.append(playlistAlbumName);
@@ -409,7 +409,7 @@ function showFavourites() {
   for (var song of songs) {
     var card = $("<div>");
     card
-      .attr("class", "card mb-3")
+      .attr("class", "favCards card mb-3")
       .attr("style", "max-width: 540px;")
       .attr("data-songName", song.songTitle)
       .attr("data-artistName", song.songArtist)
@@ -428,9 +428,9 @@ function showFavourites() {
       song.songTitle +
       "</h5>" +
       "</div>" +
-      '<div class="pb-2 text-center">' +
-      '<button class="btn mb-1 btn-primary lyricsButton">View Lyrics</button>' +
-      '<button class="btn btn-primary deleteButton">Delete Song</button>' +
+      '<div class="d-flex flex-wrap gap-2 pb-2 text-center">' +
+      '<button class="btn btn-primary flex-fill lyricsButton">View Lyrics</button>' +
+      '<button class="btn btn-primary flex-fill deleteButton">Delete Song</button>' +
       "</div>" +
       "</div>" +
       "</div>"

@@ -10,23 +10,24 @@ $('#backButton').hide();
 //setting currentIndex for api url
 currentIndex = -12;
 
-function showLyricData() {
+function showLyricData(e) {
 
-  $('#backButton').show();
-  // $("#playlistContainer").html(
-  //   '<div id="spinnerContainer" class="d-flex justify-content-center align-items-center flex-column">' +
-  //   '<div id="pageLoadSpinner" class="spinner-border mb-3" role="status">' +
-  //   "</div>" +
-  //   '<h3>Loading your songs...</h3>' +
-  //   "</div>"
-  // );
-
-  let artist = JSON.parse(localStorage.getItem('search')) || $('#search-input').val();
-  localStorage.setItem('search', JSON.stringify(artist));
-
-
-  // Ajax request for artist (Deezer API)
-  let settings = {
+  $('#loadMoreButton').show();
+  var loadingSpinner = $("<div>").html(
+    '<div id="spinnerContainer" class="d-flex justify-content-center align-items-center flex-column">' +
+    '<div id="pageLoadSpinner" class="spinner-border mb-3" role="status">' +
+    "</div>" +
+    '<h3>Loading your songs...</h3>' +
+    "</div>"
+    );
+    $("#main").prepend(loadingSpinner);
+    loadingSpinner.show();
+    
+    let artist = JSON.parse(localStorage.getItem('search')) || $('#search-input').val();
+    localStorage.setItem('search', JSON.stringify(artist));
+    
+    // Ajax request for artist (Deezer API)
+    let settings = {
     async: true,
     crossDomain: true,
     url: "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + artist + "&index=" + currentIndex + "&limit=12",
@@ -36,33 +37,40 @@ function showLyricData() {
       "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com",
     },
   };
-
+  
   $.ajax(settings).done(function (songResponse) {
-
+    
     // Account for both submitting an empty string or writing an
     // unknown artist. Only writing an empty string (or ajax request limit problems etc)
     //creates a response error object, otherwise it just returns an response object with a total of 0
+    loadingSpinner.hide();
     if (songResponse.error) {
-      resultsHeading.hide();
       invalidSearch(artist, true);
     } else if (songResponse.total === 0) {
-      resultsHeading.hide();
+      $('#search-input').val('');
       invalidSearch(artist, false);
+      $
     } else {
+      
+      $('#backButton').show();
+      $("#playlistHeading").hide();
       $("#playlistContainer").empty();
-
+      if (e !== undefined && e[0].id === "search-button") {
+        $("#cardContainer").empty();
+      }
+      
       currentIndex += 12;
       // adding artist name to h2
       resultsHeading.text("Top Results for " + artist);
       resultsHeading.show();
-
+      
       // store song response information
       var songResults = songResponse.data;
       var songResultsArray = [];
-
+      
       // loop through the data for the first 12 responses
       $.each(songResults, function (index, value) {
-
+        
         // get the title, artist, cover image and album for each song
         songsObj = {
           songTitle: value.title,
@@ -509,8 +517,7 @@ function alreadyInFavesError() {
 
   $(".modal-footer").hide();
   $(".modal-body").hide();
-  $('#lyricsModal').modal('show'); 
-  
+  $('#lyricsModal').modal('show'); // set command for show 
   setTimeout(function () {
     $('#lyricsModal').modal('hide');
   }, 2000);
@@ -573,9 +580,9 @@ $("#search-button").on("click", function (e) {
   let artist = $('#search-input').val();
   localStorage.setItem('search', JSON.stringify(artist));
 
-  $("#cardContainer").empty();
-  playlistHeading.hide();
-  showLyricData();
+  // $("#cardContainer").empty();
+  // playlistHeading.hide();
+  showLyricData($(e.target));
   $('#loadMoreButton2').hide();
 });
 
@@ -611,7 +618,8 @@ $(document).on("click", ".deleteButton", function () {
 $(document).on("click", ".lyricsButton", showModal);
 
 // When the 'Add to favourites' button is clicked, save song to local storage
-$(document).on("click", ".favsButton", function () {
+$(document).on("click", ".favsButton", function (event) {
+
   $("#favourites").empty();
   var songs = JSON.parse(localStorage.getItem("songData")) || [];
   var songObject = {

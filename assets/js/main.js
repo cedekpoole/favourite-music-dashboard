@@ -13,12 +13,17 @@ currentIndex = -12;
 function showLyricData() {
 
   $('#backButton').show();
-  $("#playlistContainer").empty();
+  // $("#playlistContainer").html(
+  //   '<div id="spinnerContainer" class="d-flex justify-content-center align-items-center flex-column">' +
+  //   '<div id="pageLoadSpinner" class="spinner-border mb-3" role="status">' +
+  //   "</div>" +
+  //   '<h3>Loading your songs...</h3>' +
+  //   "</div>"
+  // );
 
   let artist = JSON.parse(localStorage.getItem('search')) || $('#search-input').val();
   localStorage.setItem('search', JSON.stringify(artist));
 
-  currentIndex += 12;
 
   // Ajax request for artist (Deezer API)
   let settings = {
@@ -44,7 +49,9 @@ function showLyricData() {
       resultsHeading.hide();
       invalidSearch(artist, false);
     } else {
+      $("#playlistContainer").empty();
 
+      currentIndex += 12;
       // adding artist name to h2
       resultsHeading.text("Top Results for " + artist);
       resultsHeading.show();
@@ -168,14 +175,14 @@ function showLyricData() {
         var songResultLyricsBtn = $("<button>");
         songResultLyricsBtn.attr(
           "class",
-          "btn btn-primary flex-fill lyricsButton"
+          "btn btn-primary button flex-fill lyricsButton"
         );
         // songResultLyricsBtn.attr("style", "margin-right: .5rem !important;");
         songResultLyricsBtn.text("View Lyrics");
         songResultButtonDiv.append(songResultLyricsBtn);
 
         var songResultFavBtn = $("<button>");
-        songResultFavBtn.attr("class", "btn btn-primary flex-fill favsButton");
+        songResultFavBtn.attr("class", "btn btn-primary button flex-fill favsButton");
         songResultFavBtn.text("Add to Favs");
         songResultButtonDiv.append(songResultFavBtn);
 
@@ -186,7 +193,7 @@ function showLyricData() {
         var loadMoreButtonDiv = $('<div class="d-flex justify-content-center align-items-center>"</div>');
         $(loadMoreButtonDiv).append(loadMoreButton);
         $('#main').append(loadMoreButtonDiv);
-        $('#loadMoreButton').attr('class', 'btn btn-primary m-4');
+        $('#loadMoreButton').attr('class', 'btn btn-primary button m-4');
 
         $('#loadMoreButton').on('click', function () {
           $('html, body').animate({
@@ -206,7 +213,6 @@ function showLyricData() {
 
 function showPlaylist() {
 
-  currentIndex += 12;
 
   const settings = {
     async: true,
@@ -222,182 +228,192 @@ function showPlaylist() {
   $.ajax(settings).done(function (playlistResponse) {
     console.log(playlistResponse);
 
-    // store song response information
-    var playlistTracks = playlistResponse.tracks.data;
-    var playlistTracksArray = [];
+    if (playlistResponse.error) {
+      setTimeout(function () {
+        showPlaylist();
+      }, 200);
+    }
+    else {
+      currentIndex += 12;
+      // store song response information
+      var playlistTracks = playlistResponse.tracks.data;
+      var playlistTracksArray = [];
 
-    // loop through the data for the first 12 responses
-    $.each(playlistTracks, function (index, value) {
+      // loop through the data for the first 12 responses
+      $.each(playlistTracks, function (index, value) {
 
-      // get the title, artist, cover image and album for each song
-      playlistObj = {
-        songTitle: value.title,
-        songArtist: value.artist.name,
-        coverImage: value.album.cover_big,
-        songAlbum: value.album.title,
-      };
-      console.log(playlistObj);
+        // get the title, artist, cover image and album for each song
+        playlistObj = {
+          songTitle: value.title,
+          songArtist: value.artist.name,
+          coverImage: value.album.cover_big,
+          songAlbum: value.album.title,
+        };
+        console.log(playlistObj);
 
-      playlistTracksArray.push(playlistObj);
-    });
+        playlistTracksArray.push(playlistObj);
+      });
 
-    var playlistRow = $(
-      '<div class="row w-100 justify-content-between"></div>'
-    );
+      var playlistRow = $(
+        '<div class="row w-100 justify-content-between"></div>'
+      );
 
-    playlistHeading.text("Hits UK Playlist");
-    playlistHeading.show();
+      playlistHeading.text("Hits UK Playlist");
+      playlistHeading.show();
 
-    const columns = 12;
+      const columns = 12;
 
 
-    // loop through the stored song info and display in bootstrap cards
-    for (let i = 0; i < 12 && i < playlistTracksArray.length; i++) {
-      //create div to hold each card
-      var playlistTracksContainer = $("<div>");
+      // loop through the stored song info and display in bootstrap cards
+      for (let i = 0; i < 12 && i < playlistTracksArray.length; i++) {
+        //create div to hold each card
+        var playlistTracksContainer = $("<div>");
 
-      if (!localStorage.getItem("songData")) {
-        playlistTracksContainer.attr(
-          "class",
-          "resultContainer col-md-6 col-lg-3  flex-fill d-flex align-items-stretch"
+        if (!localStorage.getItem("songData")) {
+          playlistTracksContainer.attr(
+            "class",
+            "resultContainer col-md-6 col-lg-3  flex-fill d-flex align-items-stretch"
+          );
+        } else {
+          playlistTracksContainer.attr(
+            "class",
+            "resultContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
+          );
+        }
+        playlistRow.append(playlistTracksContainer);
+
+        //create bootstrap card, add data attributes to card
+        var playlistCard = $("<div>");
+        playlistCard
+          .attr("class", "card result mt-4 w-100")
+          .attr("data-songName", playlistTracksArray[i].songTitle)
+          .attr("data-artistName", playlistTracksArray[i].songArtist)
+          .attr("data-coverImg", playlistTracksArray[i].coverImage);
+        // songResultCard.attr('style', 'width: 12rem;');
+        playlistTracksContainer.append(playlistCard);
+
+        //add image to card
+        var playlistImg = $("<img>");
+        playlistImg.attr("class", "card-img-top");
+        playlistImg.attr("src", playlistTracksArray[i].coverImage);
+        playlistCard.append(playlistImg);
+
+        // add card body div
+        var playlistCardBody = $("<div>");
+        playlistCardBody.attr("class", "d-flex card-body flex-column");
+        playlistCard.append(playlistCardBody);
+
+        //add song title heading
+        var playlistTitle = $("<h2>");
+        playlistTitle.attr("class", "card-title");
+        playlistTitle.attr(
+          "style",
+          "font-size: calc(1rem + .5vw) !important; margin-bottom: 0 !important;"
         );
-      } else {
-        playlistTracksContainer.attr(
-          "class",
-          "resultContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
+        playlistTitle.text(playlistTracksArray[i].songTitle);
+        playlistCardBody.append(playlistTitle);
+
+        // add line
+        var playlistDivider = $("<hr>");
+        playlistDivider.attr("class", "hr");
+        playlistDivider.attr(
+          "style",
+          "margin: .5rem 0 !important; color: white;"
         );
-      }
-      playlistRow.append(playlistTracksContainer);
+        playlistCardBody.append(playlistDivider);
 
-      //create bootstrap card, add data attributes to card
-      var playlistCard = $("<div>");
-      playlistCard
-        .attr("class", "card result mt-4 w-100")
-        .attr("data-songName", playlistTracksArray[i].songTitle)
-        .attr("data-artistName", playlistTracksArray[i].songArtist)
-        .attr("data-coverImg", playlistTracksArray[i].coverImage);
-      // songResultCard.attr('style', 'width: 12rem;');
-      playlistTracksContainer.append(playlistCard);
+        // add artist
+        var playlistArtistName = $("<h3>");
+        playlistArtistName.attr(
+          "style",
+          "font-size: calc(.8rem + .2vw) !important; margin-bottom: 0 !important;"
+        );
+        playlistArtistName.text("By " + playlistTracksArray[i].songArtist);
+        playlistCardBody.append(playlistArtistName);
 
-      //add image to card
-      var playlistImg = $("<img>");
-      playlistImg.attr("class", "card-img-top");
-      playlistImg.attr("src", playlistTracksArray[i].coverImage);
-      playlistCard.append(playlistImg);
+        // add line
+        var playlistDivider2 = $("<hr>");
+        playlistDivider2.attr("class", "hr");
+        playlistDivider2.attr(
+          "style",
+          "margin: .5rem 0 !important; color: white;"
+        );
+        playlistCardBody.append(playlistDivider2);
 
-      // add card body div
-      var playlistCardBody = $("<div>");
-      playlistCardBody.attr("class", "d-flex card-body flex-column");
-      playlistCard.append(playlistCardBody);
+        //add album name
+        var playlistAlbumName = $("<h3>");
+        playlistAlbumName.attr(
+          "style",
+          "font-size: calc(.8rem + .2vw) !important; margin-bottom: 2rem;"
+        );
+        playlistAlbumName.text("Album: " + playlistTracksArray[i].songAlbum);
+        playlistCardBody.append(playlistAlbumName);
 
-      //add song title heading
-      var playlistTitle = $("<h2>");
-      playlistTitle.attr("class", "card-title");
-      playlistTitle.attr(
-        "style",
-        "font-size: calc(1rem + .5vw) !important; margin-bottom: 0 !important;"
-      );
-      playlistTitle.text(playlistTracksArray[i].songTitle);
-      playlistCardBody.append(playlistTitle);
+        //add buttons div
+        var playlistButtonDiv = $("<div>");
+        playlistButtonDiv.attr("class", "d-flex flex-wrap gap-2 mt-auto");
+        playlistCardBody.append(playlistButtonDiv);
 
-      // add line
-      var playlistDivider = $("<hr>");
-      playlistDivider.attr("class", "hr");
-      playlistDivider.attr(
-        "style",
-        "margin: .5rem 0 !important; color: white;"
-      );
-      playlistCardBody.append(playlistDivider);
+        //add buttons to div
+        var playlistLyricsBtn = $("<button>");
+        playlistLyricsBtn.attr("class", "btn btn-primary button flex-fill lyricsButton");
+        // songResultLyricsBtn.attr("style", "margin-right: .5rem !important;");
+        playlistLyricsBtn.text("View Lyrics");
+        playlistButtonDiv.append(playlistLyricsBtn);
 
-      // add artist
-      var playlistArtistName = $("<h3>");
-      playlistArtistName.attr(
-        "style",
-        "font-size: calc(.8rem + .2vw) !important; margin-bottom: 0 !important;"
-      );
-      playlistArtistName.text("By " + playlistTracksArray[i].songArtist);
-      playlistCardBody.append(playlistArtistName);
+        var playlistFavBtn = $("<button>");
+        playlistFavBtn.attr("class", "btn btn-primary button flex-fill favsButton");
+        playlistFavBtn.text("Add to Favs");
+        playlistButtonDiv.append(playlistFavBtn);
 
-      // add line
-      var playlistDivider2 = $("<hr>");
-      playlistDivider2.attr("class", "hr");
-      playlistDivider2.attr(
-        "style",
-        "margin: .5rem 0 !important; color: white;"
-      );
-      playlistCardBody.append(playlistDivider2);
-
-      //add album name
-      var playlistAlbumName = $("<h3>");
-      playlistAlbumName.attr(
-        "style",
-        "font-size: calc(.8rem + .2vw) !important; margin-bottom: 2rem;"
-      );
-      playlistAlbumName.text("Album: " + playlistTracksArray[i].songAlbum);
-      playlistCardBody.append(playlistAlbumName);
-
-      //add buttons div
-      var playlistButtonDiv = $("<div>");
-      playlistButtonDiv.attr("class", "d-flex flex-wrap gap-2 mt-auto");
-      playlistCardBody.append(playlistButtonDiv);
-
-      //add buttons to div
-      var playlistLyricsBtn = $("<button>");
-      playlistLyricsBtn.attr("class", "btn btn-primary flex-fill lyricsButton");
-      // songResultLyricsBtn.attr("style", "margin-right: .5rem !important;");
-      playlistLyricsBtn.text("View Lyrics");
-      playlistButtonDiv.append(playlistLyricsBtn);
-
-      var playlistFavBtn = $("<button>");
-      playlistFavBtn.attr("class", "btn btn-primary flex-fill favsButton");
-      playlistFavBtn.text("Add to Favs");
-      playlistButtonDiv.append(playlistFavBtn);
-
-      if (i === playlistTracksArray.length - 1) {
-        let remainingColumns = columns - playlistTracksArray.length % columns;
-        for (let j = 0; j < remainingColumns; j++) {
-          let emptyColumn = $('<div>');
-          if (!localStorage.getItem('songData')) {
-            emptyColumn
-              .attr(
-                "class",
-                "resultContainer col-md-6 col-lg-3  flex-fill d-flex align-items-stretch"
-              );
-          } else {
-            emptyColumn
-              .attr(
-                "class",
-                "resultContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
-              );
-          };
-          playlistRow.append(emptyColumn);
+        if (i === playlistTracksArray.length - 1) {
+          let remainingColumns = columns - playlistTracksArray.length % columns;
+          for (let j = 0; j < remainingColumns; j++) {
+            let emptyColumn = $('<div>');
+            if (!localStorage.getItem('songData')) {
+              emptyColumn
+                .attr(
+                  "class",
+                  "resultContainer col-md-6 col-lg-3  flex-fill d-flex align-items-stretch"
+                );
+            } else {
+              emptyColumn
+                .attr(
+                  "class",
+                  "resultContainer col-xl-4 col-lg-4 col-md-6 flex-fill d-flex align-items-stretch"
+                );
+            };
+            playlistRow.append(emptyColumn);
+          }
         }
       }
+
+      if (!$('#loadMoreButton2').length) {
+        var loadMoreButton2 = $('<button id="loadMoreButton2">Load More</button>');
+        var loadMoreButtonDiv2 = $('<div class="d-flex justify-content-center align-items-center>"</div>');
+        $(loadMoreButtonDiv2).append(loadMoreButton2);
+        $('#main').append(loadMoreButtonDiv2);
+        $('#loadMoreButton2').attr('class', 'btn btn-primary button m-4');
+
+        $('#loadMoreButton2').on('click', function () {
+          $('html, body').animate({
+            scrollTop: $(window).scrollTop() + $(window).height() * 0.5
+          }, 'slow');
+          if (playlistTracksArray.length - currentIndex < 12) {
+            $('#loadMoreButton2').hide();
+
+          };
+          currentIndex += 12;
+          resultsHeading.hide();
+          showPlaylist();
+
+        })
+      }
+
+      $("#playlistContainer").append(playlistRow);
     }
-
-    if (!$('#loadMoreButton2').length) {
-      var loadMoreButton2 = $('<button id="loadMoreButton2">Load More</button>');
-      var loadMoreButtonDiv2 = $('<div class="d-flex justify-content-center align-items-center>"</div>');
-      $(loadMoreButtonDiv2).append(loadMoreButton2);
-      $('#main').append(loadMoreButtonDiv2);
-      $('#loadMoreButton2').attr('class', 'btn btn-primary m-4');
-
-      $('#loadMoreButton2').on('click', function () {
-        $('html, body').animate({
-          scrollTop: $(window).scrollTop() + $(window).height() * 0.5
-        }, 'slow');
-        if (playlistTracksArray.length - currentIndex < 12) {
-          $('#loadMoreButton2').hide();
-
-        };
-        currentIndex += 12;
-        resultsHeading.hide();
-        showPlaylist();
-
-      })
-    }
-
-    $("#playlistContainer").append(playlistRow);
+  }).catch(function () {
+    showPlaylist()
   });
 }
 
@@ -429,8 +445,8 @@ function showFavourites() {
       "</h5>" +
       "</div>" +
       '<div class="d-flex flex-wrap gap-2 pb-2 text-center">' +
-      '<button class="btn btn-primary flex-fill lyricsButton">View Lyrics</button>' +
-      '<button class="btn btn-primary flex-fill deleteButton">Delete Song</button>' +
+      '<button class="btn btn-primary button button flex-fill lyricsButton">View Lyrics</button>' +
+      '<button class="btn btn-danger button flex-fill deleteButton">Delete Song</button>' +
       "</div>" +
       "</div>" +
       "</div>"
@@ -472,17 +488,33 @@ function invalidSearch(searchString, apiFail) {
   if (searchString === "") {
     $("#lyricsModalContent").text(`You have to search for something!`);
   } else if (apiFail) {
-    $("#lyricsModalContent").text(
-      `Our system failed to handle your request at this moment. Please try again.`
-    );
-    $("#retryButton").show();
+    setTimeout(function () {
+      showLyricData();
+    }, 200);
+    return
+
   } else {
     $("#lyricsModalContent").text(
       `We weren't able to find any results for "${searchString}"`
     );
   }
   $("#favouritesButton").hide();
+  $(".modal-footer").show();
+  $(".modal-body").show();
   $("#lyricsModal").modal("show");
+}
+
+function alreadyInFavesError() {
+  $("#lyricsModalTitle").text("This song is already in your faves!");
+
+  $(".modal-footer").hide();
+  $(".modal-body").hide();
+  $('#lyricsModal').modal('show'); 
+  
+  setTimeout(function () {
+    $('#lyricsModal').modal('hide');
+  }, 2000);
+
 }
 
 function showModal(e) {
@@ -531,6 +563,8 @@ function showModal(e) {
       );
       $("#favouritesButton").hide();
     });
+  $(".modal-footer").show();
+  $(".modal-body").show();
   $("#lyricsModal").modal("show");
 }
 
@@ -585,7 +619,7 @@ $(document).on("click", ".favsButton", function () {
     songTitle: $(this).closest("[data-songName]").attr("data-songName"),
     songArtist: $(this).closest("[data-artistName]").attr("data-artistName"),
   };
-  
+
   songs.push(songObject);
   // To stop duplication of the the songData objects, loop through the array and remove them
   //Use the reduce method to go through every item and see if we already have an object added to the accumulator with the same songObject as the current item.
@@ -596,6 +630,10 @@ $(document).on("click", ".favsButton", function () {
       )
     ) {
       accumulator.push(current);
+    }
+    else {
+      alreadyInFavesError()
+
     }
     return accumulator;
   }, []);

@@ -21,13 +21,12 @@ aside.col-lg-4 p-4 {
     background-color: #0a183d;
 }
 
-.btn-primary {
+.button {
     --bs-btn-bg: #e65b00;
     --bs-btn-border-color: #e65b00;
     --bs-btn-hover-color: #fff;
     --bs-btn-hover-bg: #ffa970;
     --bs-btn-hover-border-color: #ffa970;
-   
 }
 
 .btn {
@@ -82,4 +81,14 @@ aside.col-lg-4 p-4 {
 
 #search-form input:focus-visible {
 outline: none;
+}
+
+#pageLoadSpinner {
+    width: 200px; 
+    height: 200px;
+    color: #ff6500;
+}
+
+#spinnerContainer {
+    height:90vh;
 }

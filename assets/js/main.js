@@ -10,9 +10,11 @@ $('#backButton').hide();
 //setting currentIndex for api url
 currentIndex = -12;
 
+//function to show the search result data
 function showLyricData(e) {
 
   $('#loadMoreButton').show();
+  //add loading spinner to show when response is loading
   var loadingSpinner = $("<div>").html(
     '<div id="spinnerContainer" class="d-flex justify-content-center align-items-center flex-column">' +
     '<div id="pageLoadSpinner" class="spinner-border mb-3" role="status">' +
@@ -23,10 +25,12 @@ function showLyricData(e) {
     $("#main").prepend(loadingSpinner);
     loadingSpinner.show();
     
+    // set the artist variable to either the 'search' key value or value of the search input
     let artist = JSON.parse(localStorage.getItem('search')) || $('#search-input').val();
+    // add the artist variable to localStorage
     localStorage.setItem('search', JSON.stringify(artist));
     
-    // Ajax request for artist (Deezer API)
+    // Ajax request for artist + song (Deezer API)
     let settings = {
     async: true,
     crossDomain: true,
@@ -41,7 +45,7 @@ function showLyricData(e) {
   $.ajax(settings).done(function (songResponse) {
     
     // Account for both submitting an empty string or writing an
-    // unknown artist. Only writing an empty string (or ajax request limit problems etc)
+    // unknown artist or song. Only writing an empty string (or ajax request limit problems etc)
     //creates a response error object, otherwise it just returns an response object with a total of 0
     loadingSpinner.hide();
     if (songResponse.error) {
@@ -55,10 +59,12 @@ function showLyricData(e) {
       $('#backButton').show();
       $("#playlistHeading").hide();
       $("#playlistContainer").empty();
+      //check if event was triggered by the search button
       if (e !== undefined && e[0].id === "search-button") {
         $("#cardContainer").empty();
       }
       
+      //add another 12 to the currentIndex to loop through the results of the api
       currentIndex += 12;
       // adding artist name to h2
       resultsHeading.text("Top Results for " + artist);
@@ -196,19 +202,25 @@ function showLyricData(e) {
 
       }
 
+      // if there is currently no load more button
       if (!$('#loadMoreButton').length) {
+        // add button
         var loadMoreButton = $('<button id="loadMoreButton">Load More  <i class="fa-solid fa-arrow-down"></i></button>');
         var loadMoreButtonDiv = $('<div class="d-flex justify-content-center align-items-center>"</div>');
         $(loadMoreButtonDiv).append(loadMoreButton);
         $('#main').append(loadMoreButtonDiv);
         $('#loadMoreButton').attr('class', 'btn btn-primary button m-4');
 
+
+        // when button clicked, redo the api
         $('#loadMoreButton').on('click', function () {
           $('html, body').animate({
             scrollTop: $(window).scrollTop() + $(window).height() * 0.5
           }, 'slow');
+          // set artist to last input search
           artist = localStorage.getItem('search');
           showLyricData();
+          //add 12 to currentIndex to show next set of data
           currentIndex += 12;
         })
       }
@@ -219,6 +231,7 @@ function showLyricData(e) {
   });
 }
 
+// function to show the playlist screen
 function showPlaylist() {
 
 
@@ -234,7 +247,7 @@ function showPlaylist() {
   };
 
   $.ajax(settings).done(function (playlistResponse) {
-    console.log(playlistResponse);
+    // console.log(playlistResponse);
 
     if (playlistResponse.error) {
       setTimeout(function () {
@@ -257,7 +270,7 @@ function showPlaylist() {
           coverImage: value.album.cover_big,
           songAlbum: value.album.title,
         };
-        console.log(playlistObj);
+        // console.log(playlistObj);
 
         playlistTracksArray.push(playlistObj);
       });
@@ -595,7 +608,7 @@ $("#clearFavourites").on("click", clearFavourites);
 $(document).on("click", ".deleteButton", function () {
   $("#favourites").empty();
   var songData = JSON.parse(localStorage.getItem("songData"));
-  console.log(songData);
+  // console.log(songData);
   var songObject = {
     image: $(this).closest("[data-coverImg]").attr("data-coverImg"),
     songTitle: $(this).closest("[data-songName]").attr("data-songName"),

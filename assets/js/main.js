@@ -53,13 +53,14 @@ function showLyricData(e) {
     } else if (songResponse.total === 0) {
       $('#search-input').val('');
       invalidSearch(artist, false);
-      $
     } else {
 
       $('#backButton').show();
       $("#playlistHeading").hide();
       $("#playlistContainer").empty();
-      //check if event was triggered by the search button
+
+      //check if event was triggered by the search button, 
+      // if the event is undefined this function was called by load more button instead of search button
       if (e !== undefined && e[0].id === "search-button") {
         $("#cardContainer").empty();
       }
@@ -89,7 +90,6 @@ function showLyricData(e) {
       });
 
       var row = $('<div class="row w-100 justify-content-between"></div>');
-
 
       // loop through the stored song info and display in bootstrap cards
       for (let i = 0; i < 12 && i < songResultsArray.length; i++) {
@@ -510,6 +510,7 @@ function clearFavourites() {
 }
 
 // when deezer ajax query fails, update the modal content to be an appropriate message to the error thrown
+// This checks for empty strings, invalid searches and API fails 
 function invalidSearch(searchString, apiFail) {
   $("#lyricsModalTitle").text("Oops!");
   $("#retryButton").hide();
@@ -533,7 +534,8 @@ function invalidSearch(searchString, apiFail) {
   $("#lyricsModal").modal("show");
 }
 
-// function to deal with duplicated favourites
+// function is called when there is already a song in the faves and you try to add again
+// shows a popup modal for 2 seconds and then disappears
 function alreadyInFavesError() {
   $("#lyricsModalTitle").text("This song is already in your faves!");
 

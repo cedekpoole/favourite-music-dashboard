@@ -42,7 +42,7 @@ As a music lover, I want to be able to search and store my favourite songs and e
 - Have a clean repository that meets quality coding standards (file structure, naming conventions, best practices for class/id naming conventions, indentation, quality comments, and so on).
 
 - Have a quality README (including a unique name, description, technologies used, screenshot, and link to the deployed application).
-Provide a short description explaining the what, why, and how of your project. Use the following questions as a guide:
+Provide a short description explaining the what, why, and how of your project. 
 
 
 ## Installation 

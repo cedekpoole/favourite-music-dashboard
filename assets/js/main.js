@@ -21,17 +21,17 @@ function showLyricData(e) {
     "</div>" +
     '<h3>Loading your songs...</h3>' +
     "</div>"
-    );
-    $("#main").prepend(loadingSpinner);
-    loadingSpinner.show();
-    
-    // set the artist variable to either the 'search' key value or value of the search input
-    let artist = JSON.parse(localStorage.getItem('search')) || $('#search-input').val();
-    // add the artist variable to localStorage
-    localStorage.setItem('search', JSON.stringify(artist));
-    
-    // Ajax request for artist + song (Deezer API)
-    let settings = {
+  );
+  $("#main").prepend(loadingSpinner);
+  loadingSpinner.show();
+
+  // set the artist variable to either the 'search' key value or value of the search input
+  let artist = JSON.parse(localStorage.getItem('search')) || $('#search-input').val();
+  // add the artist variable to localStorage
+  localStorage.setItem('search', JSON.stringify(artist));
+
+  // Ajax request for artist + song (Deezer API)
+  let settings = {
     async: true,
     crossDomain: true,
     url: "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + artist + "&index=" + currentIndex + "&limit=12",
@@ -41,9 +41,9 @@ function showLyricData(e) {
       "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com",
     },
   };
-  
+
   $.ajax(settings).done(function (songResponse) {
-    
+
     // Account for both submitting an empty string or writing an
     // unknown artist or song. Only writing an empty string (or ajax request limit problems etc)
     //creates a response error object, otherwise it just returns an response object with a total of 0
@@ -55,7 +55,7 @@ function showLyricData(e) {
       invalidSearch(artist, false);
       $
     } else {
-      
+
       $('#backButton').show();
       $("#playlistHeading").hide();
       $("#playlistContainer").empty();
@@ -63,20 +63,20 @@ function showLyricData(e) {
       if (e !== undefined && e[0].id === "search-button") {
         $("#cardContainer").empty();
       }
-      
+
       //add another 12 to the currentIndex to loop through the results of the api
       currentIndex += 12;
       // adding artist name to h2
       resultsHeading.text("Top Results for " + artist);
       resultsHeading.show();
-      
+
       // store song response information
       var songResults = songResponse.data;
       var songResultsArray = [];
-      
+
       // loop through the data for the first 12 responses
       $.each(songResults, function (index, value) {
-        
+
         // get the title, artist, cover image and album for each song
         songsObj = {
           songTitle: value.title,

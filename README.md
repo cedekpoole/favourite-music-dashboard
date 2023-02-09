@@ -89,7 +89,6 @@ Project contributors:
     - General refactoring of code base
 
 - [DollyA-bit](https://github.com/DollyA-bit)
-    - Input on the README file
     - Picked the colour scheme of the page
 
 - [cedekpoole](https://github.com/cedekpoole)
@@ -119,5 +118,6 @@ Please refer to the LICENSE in the repo.
 ## Roadmap 
 
 - Use Youtube Data API to add the music video of that particular song in the modal?
-- Add playlist cards to the welcome screen (to give users more choice on the playlists they want to look at) 
-- Create a logo for the page
+- Add the audio for each song in the lyric modal
+- ~~Add playlist cards to the welcome screen (to give users more choice on the playlists they want to look at)~~ **DONE** => in forked version of repo - need to merge with main branch
+- ~~Create a logo for the page~~ **DONE** => has been pushed to main

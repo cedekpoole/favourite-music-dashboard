@@ -94,6 +94,10 @@ aside.col-lg-4 p-4 {
   transform: translate(-50%, 0%);
 }
 
+.favCards {
+    border: none;
+}
+
 .favCardBody {
     border-radius: 0px 20px 20px 0px;
 } 

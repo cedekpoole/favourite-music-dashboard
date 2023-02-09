@@ -113,11 +113,13 @@ Please refer to the LICENSE in the repo.
 - Favourite songs are saved to local storage
 - When an error occurs, a modal pop up is returned 
 - Delete each favourite song - which is stored in local storage - individually or collectively
+- When a song is already added to favourites, a modal pops up that states that the song is already in the favourites section
+- **Coming Soon**: A variety of playlists are shown on the welcome screen (to give users more choice on the playlists they want to look at)
 
 
 ## Roadmap 
 
 - Use Youtube Data API to add the music video of that particular song in the modal?
 - Add the audio for each song in the lyric modal
-- ~~Add playlist cards to the welcome screen (to give users more choice on the playlists they want to look at)~~ **DONE** => in forked version of repo - need to merge with main branch
-- ~~Create a logo for the page~~ **DONE** => has been pushed to main
+- ~~Add playlist cards to the welcome screen (to give users more choice on the playlists they want to look at)~~ **DONE**: in forked version of repo - need to merge with main branch
+- ~~Create a logo for the page~~ **DONE**: has been pushed to main

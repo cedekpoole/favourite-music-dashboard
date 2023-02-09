@@ -197,7 +197,7 @@ function showLyricData(e) {
       }
 
       if (!$('#loadMoreButton').length) {
-        var loadMoreButton = $('<button id="loadMoreButton">Load More</button>');
+        var loadMoreButton = $('<button id="loadMoreButton">Load More  <i class="fa-solid fa-arrow-down"></i></button>');
         var loadMoreButtonDiv = $('<div class="d-flex justify-content-center align-items-center>"</div>');
         $(loadMoreButtonDiv).append(loadMoreButton);
         $('#main').append(loadMoreButtonDiv);
@@ -397,7 +397,7 @@ function showPlaylist() {
       }
 
       if (!$('#loadMoreButton2').length) {
-        var loadMoreButton2 = $('<button id="loadMoreButton2">Load More</button>');
+        var loadMoreButton2 = $('<button id="loadMoreButton2">Load More  <i class="fa-solid fa-arrow-down"></i></button>');
         var loadMoreButtonDiv2 = $('<div class="d-flex justify-content-center align-items-center>"</div>');
         $(loadMoreButtonDiv2).append(loadMoreButton2);
         $('#main').append(loadMoreButtonDiv2);

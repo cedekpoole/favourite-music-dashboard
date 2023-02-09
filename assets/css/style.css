@@ -70,17 +70,9 @@ aside.col-lg-4 p-4 {
     border-radius: 20px;
 }
 
-@media screen and (max-width: 991px) {
-    #favouritesHeading, #clearFavourites {
-        text-align: center !important;
-    }
-    #favourites {
-        align-items: center;
-    }
-}
 
 #search-form input:focus-visible {
-outline: none;
+    outline: none;
 }
 
 #pageLoadSpinner {
@@ -91,4 +83,37 @@ outline: none;
 
 #spinnerContainer {
     height:90vh;
+}
+
+#headerLogo {
+    max-width: 25%;
+    position: relative;
+    top: 0;
+    right: 50%;
+    left: 50%;
+  transform: translate(-50%, 0%);
+}
+
+.favCardBody {
+    border-radius: 0px 20px 20px 0px;
+} 
+.favCardImg{
+    border-radius: 20px 0px 0px 20px;
+}
+
+
+@media screen and (max-width: 991px) {
+    #favouritesHeading, #clearFavourites {
+        text-align: center !important;
+    }
+    #favourites {
+        align-items: center;
+    }
+
+    .favCardBody {
+        border-radius: 0px 0px 20px 20px;
+    } 
+    .favCardImg{
+        border-radius: 20px 20px 0px 00px;
+    }
 }

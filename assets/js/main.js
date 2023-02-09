@@ -443,10 +443,10 @@ function showFavourites() {
       '<div class="flex-fill d-flex d-sm-block">' +
       '<img src="' +
       song.image +
-      '" class="h-100 w-100"' +
+      '" class=" favCardImg h-100 w-100"' +
       'alt="...">' +
       "</div>" +
-      '<div class="flex-fill d-flex flex-column justify-content-center align-items-center p-3">' +
+      '<div class="flex-fill d-flex flex-column justify-content-center align-items-center p-3 favCardBody">' +
       '<div class="mb-1 pt-3 text-center">' +
       '<h5 class="card-title">' +
       song.songTitle +
